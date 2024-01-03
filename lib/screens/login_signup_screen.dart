@@ -97,7 +97,11 @@ class AdminEmployeeToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AdminUIProvider uiConsumer = Provider.of<AdminUIProvider>(context);
+    double fullToggleWidth = MediaQuery.of(context).size.width * 0.76;
+    double toggleThumbWidth = MediaQuery.of(context).size.width * 0.38;
     return Container(
+      width: fullToggleWidth,
       height: 52,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(7),
@@ -106,33 +110,46 @@ class AdminEmployeeToggle extends StatelessWidget {
           width: 1.2,
         ),
       ),
-      child: Row(
+      child: Stack(
         children: [
-          Expanded(
-            child: RawMaterialButton(
-              onPressed: () {},
-              child: Text(
-                'Admin',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+          AnimatedToggleThumb(
+            width: toggleThumbWidth,
           ),
-          Expanded(
-            child: RawMaterialButton(
-              onPressed: () {},
-              child: Text(
-                'Employee',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+          Row(
+            children: [
+              Expanded(
+                child: RawMaterialButton(
+                  onPressed: () => uiConsumer.isAdmin = true,
+                  highlightColor: Colors.transparent,
+                  child: Text(
+                    'Admin',
+                    style: TextStyle(
+                      color: uiConsumer.isAdmin == true
+                          ? Colors.white
+                          : Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              Expanded(
+                child: RawMaterialButton(
+                  onPressed: () => uiConsumer.isAdmin = false,
+                  highlightColor: Colors.transparent,
+                  child: Text(
+                    'Employee',
+                    style: TextStyle(
+                      color: uiConsumer.isAdmin == false
+                          ? Colors.white
+                          : Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -140,74 +157,25 @@ class AdminEmployeeToggle extends StatelessWidget {
   }
 }
 
-// class AdminEmployeeToggle extends StatelessWidget {
-//   const AdminEmployeeToggle({
-//     super.key,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     AdminUIProvider uiConsumer = Provider.of<AdminUIProvider>(context);
-//     return Container(
-//       width: 320,
-//       height: 52,
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(7),
-//         border: Border.all(
-//           color: kPrimaryColor,
-//           width: 1.2,
-//         ),
-//       ),
-//       child: Stack(
-//         children: [
-//           AnimatedAlign(
-//             alignment: uiConsumer.isAdmin
-//                 ? Alignment.centerLeft
-//                 : Alignment.centerRight,
-//             duration: const Duration(milliseconds: 190),
-//             child: Container(
-//               width: 160,
-//               color: kPrimaryColor,
-//             ),
-//           ),
-//           Row(
-//             children: [
-//               AdminToggleLabel('Admin'),
-//               AdminToggleLabel('Employee'),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+class AnimatedToggleThumb extends StatelessWidget {
+  const AnimatedToggleThumb({
+    super.key,
+    required this.width,
+  });
 
-// class AdminToggleLabel extends StatelessWidget {
-//   final String text;
-//   const AdminToggleLabel(
-//     this.text, {
-//     super.key,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     AdminUIProvider uiConsumer = Provider.of<AdminUIProvider>(context);
-//     return Expanded(
-//         child: MaterialButton(
-//           onPressed: () {
-//             text == 'Admin'
-//                 ? uiConsumer.setAdmin(true)
-//                 : uiConsumer.setAdmin(false);
-//           },
-//           child: Text(
-//             text,
-//             style: TextStyle(
-//               color: text == 'Admin' ? Colors.grey[300] : Colors.black,
-//               fontSize: 16,
-//               fontWeight: FontWeight.w600,
-//             ),
-//           ),
-//         ),
-//     );
-//   }
-// }
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    var uiConsumer = Provider.of<AdminUIProvider>(context);
+    return AnimatedAlign(
+      alignment:
+          uiConsumer.isAdmin ? Alignment.centerLeft : Alignment.centerRight,
+      duration: const Duration(milliseconds: 190),
+      child: Container(
+        width: width,
+        color: kPrimaryColor,
+      ),
+    );
+  }
+}
