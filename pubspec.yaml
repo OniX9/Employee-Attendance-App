@@ -39,6 +39,7 @@ dependencies:
   rive: ^0.12.4
   flutter_svg: ^2.0.7
   introduction_screen: ^3.1.12
+  provider: ^6.0.5
 
 
 dev_dependencies:
@@ -70,6 +71,7 @@ flutter:
     - assets/images/onboarding_mark_attendance.svg
     - assets/images/onboarding_attendance_report.svg
     - assets/images/onboarding_notification.svg
+    - assets/images/login/background.png
 
   #   - images/a_dot_ham.jpeg
 

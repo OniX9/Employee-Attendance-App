@@ -1,8 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
 import 'package:employee_attendance/screens/onboarding_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:employee_attendance/screens/login_signup_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AdminUIProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,13 +24,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeData(),
       // home: OnBoardingScreen(),
-      home: OnBoardingScreen(),
+      home: LoginSignUpScreen(),
     );
   }
 }
-

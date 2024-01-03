@@ -227,7 +227,7 @@ class OnBoardingPageDescription extends StatelessWidget {
       child: Column(
         children: <Widget>[
           SizedBox(
-            height: 430,
+            height: 470,
           ),
           Text(
             text,
