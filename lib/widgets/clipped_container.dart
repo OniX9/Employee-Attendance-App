@@ -18,7 +18,8 @@ class ClippedContainer extends StatelessWidget {
       clipper: DiagonalClipper(clipPosition),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
-        constraints: BoxConstraints(maxWidth: 400),
+        margin: EdgeInsets.all(5),
+        constraints: BoxConstraints(maxWidth: 390),
         width: double.maxFinite,
         height: height,
         decoration: BoxDecoration(
@@ -34,8 +35,9 @@ class ClippedContainer extends StatelessWidget {
                 ),
           boxShadow: [
             BoxShadow(
-              blurRadius: 6,
-              color: Colors.black,
+              blurRadius: 5,
+              spreadRadius: 2,
+              color: Colors.black12,
             ),
           ],
         ),
@@ -54,16 +56,17 @@ class DiagonalClipper extends CustomClipper<Path> {
     final path = Path();
     if (position == Cut.bottom) {
       print(size.height);
-      path.lineTo(0.0, size.height - 43.0);
+      path.lineTo(0.0, size.height * 0.895);
       path.lineTo(size.width, size.height);
       path.lineTo(size.width, 0.0);
       path.close();
       return path;
     } else {
+      print(size.height);
       path.lineTo(0.0, 0.0);
       path.lineTo(0.0, size.height);
       path.lineTo(size.width, size.height);
-      path.lineTo(size.width, size.height- 100);
+      path.lineTo(size.width, size.height * 0.268);
       path.close();
       return path;
     }

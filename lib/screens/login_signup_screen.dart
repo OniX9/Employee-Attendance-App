@@ -171,7 +171,7 @@ class AnimatedToggleThumb extends StatelessWidget {
     return AnimatedAlign(
       alignment:
           uiConsumer.isAdmin ? Alignment.centerLeft : Alignment.centerRight,
-      duration: const Duration(milliseconds: 190),
+      duration: const Duration(milliseconds: 185),
       child: Container(
         width: width,
         color: kPrimaryColor,
