@@ -69,7 +69,7 @@ class OnBoardingPage_A extends StatelessWidget {
       children: [
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.48,
-          child: RiveAnimation.asset(
+          child: const RiveAnimation.asset(
             'assets/riv_animations/onbording_employee-animation.riv',
           ),
         ),

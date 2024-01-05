@@ -38,10 +38,10 @@ dependencies:
   flutter_onboarding_slider: ^1.0.11
   rive: ^0.12.4
   flutter_svg: ^2.0.7
-  introduction_screen: ^3.1.12
+#  introduction_screen: ^3.1.12
   provider: ^6.0.5
   widget_size: ^1.0.0
-
+  animated_toggle_switch: ^0.8.0
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +73,8 @@ flutter:
     - assets/images/onboarding_attendance_report.svg
     - assets/images/onboarding_notification.svg
     - assets/images/login/background.png
+    - assets/images/login/fingerprint-check.svg
+    - assets/images/login/acount_verification_logo.png
 
   #   - images/a_dot_ham.jpeg
 

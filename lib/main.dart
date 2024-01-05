@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       // home: OnBoardingScreen(),
       home: LoginSignUpScreen(),
+      // home: LoginSignUpScreen(),
     );
   }
 }
