@@ -22,7 +22,7 @@ class OnBoardingScreen extends StatelessWidget {
             finishButtonText: 'Start',
             centerBackground: true,
             finishButtonStyle: FinishButtonStyle(
-              backgroundColor: kPrimaryColor,
+              backgroundColor: kPrimaryColorLight,
             ),
             skipTextButton: Text('Skip'),
             // trailing: Text('Login'),

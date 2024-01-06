@@ -54,14 +54,14 @@ class AuthTextField extends StatelessWidget {
         onChanged: (newText) {},
         style: kAuthTextStyle,
         obscureText: type == AuthType.password,
-        cursorColor: kPrimaryColor,
+        cursorColor: kPrimaryColorLight,
         decoration: kAuthInputDecoration.copyWith(
           labelText: labelText(),
           prefixIcon: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Icon(
               prefixIcon(),
-              color: kPrimaryColor,
+              color: kPrimaryColorLight,
             ),
           ),
         ),

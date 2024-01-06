@@ -1,9 +1,12 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/screens/forgot_password_screen.dart';
 import 'package:employee_attendance/widgets/auth_text_field.dart';
+import 'package:employee_attendance/widgets/call_action_button.dart';
 import 'package:employee_attendance/widgets/clipped_container.dart';
 import 'package:employee_attendance/widgets/finger_icon_and_auth_check_button.dart';
 import 'package:employee_attendance/widgets/forgot_password_button.dart';
 import 'package:employee_attendance/screens/admin_create_account.dart';
+import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../controller/uiProviders/admin_ui.dart';
@@ -13,6 +16,7 @@ class LoginSignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var uiConsumer = Provider.of<AdminUIProvider>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFE5F2F3),
       body: SingleChildScrollView(
@@ -92,7 +96,16 @@ class LoginSignUpScreen extends StatelessWidget {
                                     AdminEmployeeToggle(),
                                     AuthTextField(AuthType.email),
                                     AuthTextField(AuthType.password),
-                                    ForgotPasswordButton(),
+                                    ForgotPasswordButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).push(
+                                        PageTransition(
+                                          const ForgotPasswordScreen(),
+                                          verticalDirection:
+                                              Alignment.bottomCenter,
+                                        ),
+                                      ),
+                                    ),
                                     FingerIconAndAuthCheckButton(),
                                     Expanded(child: SizedBox()),
                                   ],
@@ -100,55 +113,64 @@ class LoginSignUpScreen extends StatelessWidget {
                               ),
                             ),
                             //2. Bottom Clipped Container
-                            Align(
-                              alignment: Alignment.bottomCenter,
-                              child: ClippedContainer(
-                                clipPosition: Cut.top,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.20,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      "Don't have Admin account yet?",
-                                      style: kAuthTextStyle.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: 'Make ',
+                            AnimatedSlide(
+                              offset: uiConsumer.isAdmin
+                                  ? Offset(0, 0)
+                                  : Offset(-1.8, 0),
+                              curve: Curves.bounceOut,
+                              duration: Duration(milliseconds: 1300),
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: ClippedContainer(
+                                  clipPosition: Cut.top,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.20,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        "Don't have Admin account yet?",
                                         style: kAuthTextStyle.copyWith(
                                             fontWeight: FontWeight.w600),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: 'free',
-                                            style: kAuthTextStyle.copyWith(
-                                              color: Colors.lightBlueAccent,
-                                              fontWeight: FontWeight.w600,
-                                              decoration:
-                                                  TextDecoration.underline,
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: ' account',
-                                            style: kAuthTextStyle.copyWith(
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
                                       ),
-                                    ),
-                                    CreateAccountButton(
-                                      id: 'Create Account',
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (context){
-                                            return AdminAcountCreate();
-                                          },
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ],
+                                      RichText(
+                                        text: TextSpan(
+                                          text: 'Make ',
+                                          style: kAuthTextStyle.copyWith(
+                                              fontWeight: FontWeight.w600),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: 'free',
+                                              style: kAuthTextStyle.copyWith(
+                                                color: Colors.lightBlueAccent,
+                                                fontWeight: FontWeight.w600,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: ' account',
+                                              style: kAuthTextStyle.copyWith(
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      CallActionButton(
+                                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        label: 'CREATE ACCOUNT',
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            PageTransition(
+                                              AdminAcountCreate(),
+                                              verticalDirection:
+                                                  Alignment.bottomCenter,
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -167,39 +189,6 @@ class LoginSignUpScreen extends StatelessWidget {
   }
 }
 
-class CreateAccountButton extends StatelessWidget {
-  final String id;
-  final void Function()? onPressed;
-
-  const CreateAccountButton({
-    required this.id,
-    required this.onPressed,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: onPressed,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        height: 40,
-        alignment: Alignment.center,
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          color: kPrimaryColor,
-          borderRadius: BorderRadius.circular(6),
-        ),
-        child: Text(
-          'CREATE ACCOUNT',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 // ***CUSTOM WIDGET***
 
@@ -221,7 +210,7 @@ class AdminEmployeeToggle extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(7),
         border: Border.all(
-          color: kPrimaryColor,
+          color: kPrimaryColorLight,
           width: 1.2,
         ),
       ),
@@ -289,7 +278,7 @@ class AnimatedToggleThumb extends StatelessWidget {
       duration: const Duration(milliseconds: 195),
       child: Container(
         width: width,
-        color: kPrimaryColor,
+        color: kPrimaryColorLight,
       ),
     );
   }

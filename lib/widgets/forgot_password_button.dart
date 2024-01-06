@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 // Forgot Password Button.
 class ForgotPasswordButton extends StatelessWidget {
-  const ForgotPasswordButton({
+  void Function()? onPressed;
+
+   ForgotPasswordButton({
+    required this.onPressed,
     super.key,
   });
 
@@ -13,7 +16,7 @@ class ForgotPasswordButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 9, right: 5),
         child: GestureDetector(
-          onTap: () {},
+          onTap: onPressed,
           child: Text(
             'Forgot Password?',
             style: TextStyle(

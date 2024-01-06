@@ -39,7 +39,7 @@ class FingerIconAndAuthCheckButton extends StatelessWidget {
                 padding: EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: kPrimaryColor,
+                  color: kPrimaryColorLight,
                 ),
                 child: const Icon(
                   Icons.check_rounded,

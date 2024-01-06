@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class PageTransition extends PageRouteBuilder {
   final Widget page;
-  final AlignmentGeometry direction;
+  final AlignmentGeometry verticalDirection;
 
-  PageTransition(this.page, {this.direction = Alignment.bottomCenter})
+  PageTransition(this.page, {this.verticalDirection = Alignment.bottomCenter})
       : super(
     pageBuilder: (context, animation, anotherAnimation) => page,
     transitionDuration: const Duration(milliseconds: 1900),
@@ -14,7 +14,7 @@ class PageTransition extends PageRouteBuilder {
         parent: animation,
       );
       return Align(
-        alignment: direction,
+        alignment: verticalDirection,
         child: SizeTransition(
           sizeFactor: animation,
           axisAlignment: 0,

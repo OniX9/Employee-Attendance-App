@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-Color kPrimaryColor = const Color(0xFF00AFE7);
+Color kPrimaryColorLight = const Color(0xFF00AFE7);
+
+Color kPrimaryColorHeavy = const Color(0xFF0046A3);
 
 TextStyle kAuthTextStyle = const TextStyle(
   color: Colors.black87,

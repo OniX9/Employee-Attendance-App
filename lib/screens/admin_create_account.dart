@@ -50,24 +50,37 @@ class AdminAcountCreate extends StatelessWidget {
                               child: ClippedContainer(
                                 clipPosition: Cut.bottom,
                                 height:
-                                MediaQuery.of(context).size.height * 0.65,
+                                    MediaQuery.of(context).size.height * 0.65,
                                 child: Column(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
-                                      child: Image.asset('assets/images/login/acount_verification_logo.png'),
+                                      padding: EdgeInsets.only(
+                                          top: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.01),
+                                      child: Image.asset(
+                                          'assets/images/login/acount_verification_logo.png'),
                                     ),
                                     SizedBox(height: 15),
                                     AuthTextField(AuthType.name),
                                     AuthTextField(AuthType.phoneNumber),
                                     AuthTextField(AuthType.email),
                                     AuthTextField(AuthType.password),
-                                    Text('add your Fingerprint',
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding: EdgeInsets.only(
+                                          left: 30, top: 10),
+                                      child: Text(
+                                        'Add your Fingerprint',
                                         style: TextStyle(
-
+                                          fontSize: 11.5,
+                                          color: Colors.grey[600],
+                                          fontWeight: FontWeight.w500,
                                         ),
+                                      ),
                                     ),
                                     FingerIconAndAuthCheckButton(),
                                     Expanded(child: SizedBox()),
