@@ -1,9 +1,8 @@
-import 'dart:ffi';
-
+import 'package:flutter/material.dart';
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/widgets/call_action_button.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});
@@ -60,51 +59,75 @@ class PhoneNoTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.22,
-          child: DropdownButton(
-            value: 'Nigeria',
-            items: [
-              DropdownMenuItem(
-                value: 'Nigeria',
-                child: Row(
-                  children: [
-                    SvgPicture.asset('assets/images/country_flags/nigeria.svg'),
-                    Text('+234'),
-                  ],
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'USA',
-                child: Row(
-                  children: [
-                    SvgPicture.asset('assets/images/country_flags/united_states.svg'),
-                    Text('+001'),
-                  ],
-                ),
-              ),
-            ],
-            onChanged: (value){},
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.7,
-          child: TextField(
-            onChanged: (newText) {},
-            style: kAuthTextStyle,
-            cursorColor: kPrimaryColorLight,
-            decoration: kAuthInputDecoration.copyWith(
+    return IntlPhoneField(
+      flagsButtonMargin: EdgeInsets.only(right: 10),
+      dropdownIconPosition: IconPosition.trailing,
+      decoration:kAuthInputDecoration.copyWith(
               labelText: 'Phone number',
               labelStyle: DefaultTextStyle.of(context).style.copyWith(
                     color: kPrimaryColorLight,
                   ),
-              prefixIcon: null,
-            ),
-          ),
-        ),
-      ],
+      ),
+      initialCountryCode: 'US',
+      onChanged: (phone) {
+        print(phone.completeNumber);
+      },
     );
   }
 }
+
+// class PhoneNoTextField extends StatelessWidget {
+//   const PhoneNoTextField({
+//     super.key,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         SizedBox(
+//           width: MediaQuery.of(context).size.width * 0.22,
+//           child: DropdownButton(
+//             value: 'Nigeria',
+//             items: [
+//               DropdownMenuItem(
+//                 value: 'Nigeria',
+//                 child: Row(
+//                   children: [
+//                     SvgPicture.asset('assets/images/country_flags/nigeria.svg'),
+//                     Text('+234'),
+//                   ],
+//                 ),
+//               ),
+//               DropdownMenuItem(
+//                 value: 'USA',
+//                 child: Row(
+//                   children: [
+//                     SvgPicture.asset('assets/images/country_flags/united_states.svg'),
+//                     Text('+001'),
+//                   ],
+//                 ),
+//               ),
+//             ],
+//             onChanged: (value){},
+//           ),
+//         ),
+//         SizedBox(
+//           width: MediaQuery.of(context).size.width * 0.7,
+//           child: TextField(
+//             onChanged: (newText) {},
+//             style: kAuthTextStyle,
+//             cursorColor: kPrimaryColorLight,
+//             decoration: kAuthInputDecoration.copyWith(
+//               labelText: 'Phone number',
+//               labelStyle: DefaultTextStyle.of(context).style.copyWith(
+//                     color: kPrimaryColorLight,
+//                   ),
+//               prefixIcon: null,
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }

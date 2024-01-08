@@ -47,10 +47,25 @@ class AuthTextField extends StatelessWidget {
           return Icons.warning_amber;
       }
     }
+    TextInputType? keyboardType() {
+      switch (type) {
+        case AuthType.name:
+          return TextInputType.name;
+        case AuthType.email:
+          return TextInputType.emailAddress;
+        case AuthType.password:
+          return null;
+        case AuthType.phoneNumber:
+          return TextInputType.phone;
+        default:
+          return null;
+      }
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextField(
+        keyboardType: keyboardType(),
         onChanged: (newText) {},
         style: kAuthTextStyle,
         obscureText: type == AuthType.password,
