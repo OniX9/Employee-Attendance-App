@@ -24,7 +24,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+      ),
       // home: const OnBoardingScreen(),
       home: LoginSignUpScreen(),
     );

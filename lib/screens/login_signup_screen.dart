@@ -5,7 +5,7 @@ import 'package:employee_attendance/widgets/call_action_button.dart';
 import 'package:employee_attendance/widgets/clipped_container.dart';
 import 'package:employee_attendance/widgets/finger_icon_and_auth_check_button.dart';
 import 'package:employee_attendance/widgets/forgot_password_button.dart';
-import 'package:employee_attendance/screens/admin_create_account.dart';
+import 'package:employee_attendance/screens/admin_create_account_screen.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -101,8 +101,8 @@ class LoginSignUpScreen extends StatelessWidget {
                                           Navigator.of(context).push(
                                         PageTransition(
                                           const ForgotPasswordScreen(),
-                                          verticalDirection:
-                                              Alignment.bottomCenter,
+                                          direction:
+                                              Slide.bottom,
                                         ),
                                       ),
                                     ),
@@ -162,9 +162,9 @@ class LoginSignUpScreen extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.of(context).push(
                                             PageTransition(
-                                              AdminAcountCreate(),
-                                              verticalDirection:
-                                                  Alignment.bottomCenter,
+                                              AdminAcountCreateScreen(),
+                                              direction:
+                                                  Slide.bottom,
                                             ),
                                           );
                                         },

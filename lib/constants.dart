@@ -9,6 +9,17 @@ TextStyle kAuthTextStyle = const TextStyle(
   fontSize: 14,
 );
 
+TextStyle kHeading1Textstyle = const TextStyle(
+  fontSize: 22,
+  color: Colors.white,
+);
+
+TextStyle kSettingsTextStyle = const TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+  color: Color(0xFF424242),
+);
+
 InputDecoration kAuthInputDecoration = const InputDecoration(
   focusedBorder: UnderlineInputBorder(
     borderSide: BorderSide(

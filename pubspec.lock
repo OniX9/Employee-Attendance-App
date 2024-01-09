@@ -136,6 +136,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: "direct main"
+    description:
+      name: font_awesome_flutter
+      sha256: "52671aea66da73b58d42ec6d0912b727a42248dd9a7c76d6c20f275783c48c08"
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.6.0"
   graphs:
     dependency: transitive
     description:
@@ -256,14 +264,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
-  phone_text_field:
-    dependency: "direct main"
-    description:
-      name: phone_text_field
-      sha256: "532d126e1a6270bec1fd023647a7ad25278836cd6b3e72382a8dc2178ffc445c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.6"
   plugin_platform_interface:
     dependency: transitive
     description:

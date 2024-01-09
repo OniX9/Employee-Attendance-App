@@ -43,7 +43,7 @@ dependencies:
   animated_toggle_switch: ^0.8.0
   country_flags: ^2.2.0
   intl_phone_field: ^3.2.0
-  phone_text_field: ^0.0.6
+  font_awesome_flutter: ^10.6.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +77,9 @@ flutter:
     - assets/images/login/background.png
     - assets/images/login/fingerprint-check.svg
     - assets/images/login/acount_verification_logo.png
+    - assets/images/profile_pic.png
+    - assets/images/employee_dashboard/
+    - assets/images/skype.svg
 
   #   - images/a_dot_ham.jpeg
 

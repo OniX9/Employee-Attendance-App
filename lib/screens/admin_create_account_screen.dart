@@ -4,8 +4,8 @@ import 'package:employee_attendance/widgets/clipped_container.dart';
 import 'package:employee_attendance/widgets/finger_icon_and_auth_check_button.dart';
 import 'package:flutter/material.dart';
 
-class AdminAcountCreate extends StatelessWidget {
-  const AdminAcountCreate({super.key});
+class AdminAcountCreateScreen extends StatelessWidget {
+  const AdminAcountCreateScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
