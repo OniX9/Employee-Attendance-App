@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
   final Widget? child;
+  final double? width;
+  final double? height;
+  final EdgeInsetsGeometry? margin;
 
   const CustomCard({
+    this.margin,
+    this.height = 105,
+    this.width,
     this.child,
     super.key,
   });
@@ -11,9 +17,9 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 12),
-        width: double.maxFinite,
-        height: 105,
+        margin: margin ?? EdgeInsets.only(top: 12),
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),

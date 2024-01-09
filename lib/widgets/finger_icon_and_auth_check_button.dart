@@ -1,5 +1,6 @@
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
+import 'package:employee_attendance/screens/admin_dashboard_screen.dart';
 import 'package:employee_attendance/screens/employee_dashboard_screen.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,12 @@ class FingerIconAndAuthCheckButton extends StatelessWidget {
                     Navigator.of(context).push(
                       PageTransition(EmployeeDashboardScreen(),
                           direction: Slide.top),
+                    );
+                  } else {
+                    Navigator.of(context).push(
+                      PageTransition(AdminDashboardScreen(),
+                          direction: Slide.top,
+                      ),
                     );
                   }
                 },

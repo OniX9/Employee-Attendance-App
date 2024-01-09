@@ -80,6 +80,7 @@ flutter:
     - assets/images/profile_pic.png
     - assets/images/employee_dashboard/
     - assets/images/skype.svg
+    - assets/images/admin_dashboard_only/
 
   #   - images/a_dot_ham.jpeg
 
