@@ -1,7 +1,14 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/screens/add_employee_screen.dart';
+import 'package:employee_attendance/screens/public_holidays_screen.dart';
 import 'package:employee_attendance/screens/settings_screen.dart';
 import 'package:employee_attendance/widgets/custom_card.dart';
+import 'package:employee_attendance/widgets/dashboard_profile.dart';
+import 'package:employee_attendance/widgets/day_and_date_text.dart';
+import 'package:employee_attendance/widgets/menu_button.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
+import 'package:employee_attendance/widgets/profile_pic.dart';
+import 'package:employee_attendance/widgets/dashboard_list_item.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +22,7 @@ class AdminDashboardScreen extends StatelessWidget {
     var uiConsumer = Provider.of<AdminUIProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE5F2F3),
+      backgroundColor: kBlueScaffoldColor,
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Stack(
@@ -37,7 +44,7 @@ class AdminDashboardScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).push(
                             PageTransition(
-                              direction: Slide.right,
+                              direction: SlideFrom.right,
                               SettingScreen(),
                             ),
                           );
@@ -67,72 +74,6 @@ class AdminDashboardScreen extends StatelessWidget {
 
 // **CUSTOM WIDGETS**
 // 1.
-class MenuButton extends StatelessWidget {
-  final void Function()? onPressed;
-
-  const MenuButton({
-    required this.onPressed,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.scale(
-      scaleY: 1.2,
-      child: IconButton(
-        onPressed: onPressed,
-        icon: Icon(Icons.more_vert_rounded, size: 35),
-      ),
-    );
-  }
-}
-
-// 2.
-class DashboardProfile extends StatelessWidget {
-  const DashboardProfile({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 45, bottom: 80),
-      width: double.maxFinite,
-      height: 80,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundImage: AssetImage('assets/images/profile_pic.png'),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Good Morning,',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                ),
-              ),
-              SizedBox(height: 5),
-              Text(
-                'OLA JAMES',
-                style: kHeading1Textstyle,
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-}
-
-// 3.
 class DashBoardListView extends StatelessWidget {
   const DashBoardListView({
     super.key,
@@ -160,17 +101,34 @@ class DashBoardListView extends StatelessWidget {
                   title: 'ADD HOLIDAYS',
                   description: 'Add public holidays only',
                   imageUrl: "assets/images/employee_dashboard/holidays.png",
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        PublicHolidaysScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'ADD EMPLOYEE',
                   description: 'List of registered employees',
                   imageUrl: "assets/images/employee_dashboard/profile.png",
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        AddEmployeeScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'VIEW EMPLOYEES',
                   description: 'Mark your daily attendance',
                   imageUrl:
                       "assets/images/admin_dashboard_only/view_employees.png",
+                  onPressed: () {},
                 ),
                 DashBoardListItem(
                   title: 'TODAY PRESENT EMPLOYEES',
@@ -178,6 +136,7 @@ class DashBoardListView extends StatelessWidget {
                       'Check dates with all registered employees present or punch in/out',
                   imageUrl:
                       "assets/images/admin_dashboard_only/today_present_employees.png",
+                  onPressed: () {},
                 ),
                 DashBoardListItem(
                   title: 'SALARY CALCULATOR',
@@ -185,24 +144,28 @@ class DashBoardListView extends StatelessWidget {
                       'Check month wise attendance & calculate salary for particular employee',
                   imageUrl:
                       "assets/images/admin_dashboard_only/salary_calculator.png",
+                  onPressed: () {},
                 ),
                 DashBoardListItem(
                   title: 'VIEW ATTENDANCE REPORT',
                   description:
                       'Check your month wie attendance reports in Chart format',
                   imageUrl: "assets/images/employee_dashboard/report.png",
+                  onPressed: () {},
                 ),
                 DashBoardListItem(
                   title: 'LIVE TRACKING',
                   description: 'Track only current location of employee',
                   imageUrl:
                       "assets/images/admin_dashboard_only/live_tracking.png",
+                  onPressed: () {},
                 ),
                 DashBoardListItem(
                   title: 'CHANGE PASSWORD',
                   description: 'Allow to change your password',
                   imageUrl:
                       "assets/images/employee_dashboard/change_password.png",
+                  onPressed: () {},
                 ),
                 Container(
                   padding:
@@ -218,18 +181,24 @@ class DashBoardListView extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     children: [
                       DashBoardExtraCard(
-                        imageUri: 'assets/images/admin_dashboard_only/broadcast_notification.png',
+                        imageUri:
+                            'assets/images/admin_dashboard_only/broadcast_notification.png',
                         bottomRegionColor: kPrimaryColorHeavy,
                         title: 'BROADCAST NOTIFICATION',
-                        description: 'Send common message to all your registered employees.',
+                        description:
+                            'Send common message to all your registered employees.',
+                        onPressed: () {},
                       ),
                       DashBoardExtraCard(
-                        imageUri: 'assets/images/admin_dashboard_only/notes_rules.png',
+                        imageUri:
+                            'assets/images/admin_dashboard_only/notes_rules.png',
                         bottomRegionColor: kPrimaryColorLight,
-                          title: 'NOTES/RULES',
-                          description: 'Important notes/rules which your registered employees need to take note.',
+                        title: 'NOTES/RULES',
+                        description:
+                            'Important notes/rules which your registered employees need to take note.',
+                        onPressed: () {},
                       ),
-                      SizedBox(width:20),
+                      SizedBox(width: 20),
                     ],
                   ),
                 )
@@ -242,7 +211,10 @@ class DashBoardListView extends StatelessWidget {
   }
 }
 
+// 2.
 class DashBoardExtraCard extends StatelessWidget {
+  final void Function()? onPressed;
+
   final Color? bottomRegionColor;
   final String imageUri;
   final String title;
@@ -253,12 +225,15 @@ class DashBoardExtraCard extends StatelessWidget {
     required this.imageUri,
     required this.title,
     required this.description,
+    required this.onPressed,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return CustomCard(
+    return GestureDetector(
+      onTap: () {},
+      child: CustomCard(
         margin: EdgeInsets.only(left: 10),
         width: 220,
         height: 170,
@@ -282,15 +257,17 @@ class DashBoardExtraCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: bottomRegionColor,
                   borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(12),
-                      bottomLeft: Radius.circular(12),
-                    ),
+                    bottomRight: Radius.circular(12),
+                    bottomLeft: Radius.circular(12),
+                  ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
                   child: Column(
                     children: [
-                      Text(title,
+                      Text(
+                        title,
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
@@ -298,9 +275,10 @@ class DashBoardExtraCard extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 8),
-                      Text(description,
+                      Text(
+                        description,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: kCardDescriptionTextStyle.copyWith(
                           fontSize: 12,
                           color: Colors.white,
                         ),
@@ -312,101 +290,8 @@ class DashBoardExtraCard extends StatelessWidget {
             ),
           ],
         ),
-    );
-  }
-}
-
-class DashBoardListItem extends StatelessWidget {
-  final String title;
-  final String description;
-  final String imageUrl;
-
-  const DashBoardListItem({
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomCard(
-      margin: EdgeInsets.only(top: 12, right: 20, left: 20),
-      child: Row(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            padding: EdgeInsets.all(6),
-            margin: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              border: Border.all(
-                color: Colors.black12,
-                width: 1.2,
-              ),
-            ),
-            child: CircleAvatar(
-              backgroundImage: AssetImage(imageUrl),
-              radius: 45,
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: Colors.grey[700],
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(height: 8),
-              SizedBox(
-                width: 200,
-                child: Text(
-                  description,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 11,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Expanded(child: SizedBox()),
-          Icon(
-            Icons.arrow_forward_ios_outlined,
-            size: 18,
-            color: Colors.grey[700],
-          ),
-          const SizedBox(width: 5),
-        ],
       ),
     );
   }
 }
 
-// 4.
-class DayAndDateText extends StatelessWidget {
-  const DayAndDateText({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.scale(
-      scaleY: 1.1,
-      scaleX: 0.98,
-      child: Text(
-        'Wed, 20 Dec 2023',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-        ),
-      ),
-    );
-  }
-}

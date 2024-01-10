@@ -1,4 +1,5 @@
 import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
+import 'package:employee_attendance/controller/uiProviders/public_holidays_ui.dart';
 import 'package:employee_attendance/screens/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AdminUIProvider()),
+        ChangeNotifierProvider(create: (context) => PublicHolidaysUIProvider()),
       ],
       child: const MyApp(),
     ),

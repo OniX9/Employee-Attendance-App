@@ -1,5 +1,5 @@
 import 'package:employee_attendance/constants.dart';
-import 'package:employee_attendance/widgets/custom_appbar.dart';
+import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -104,11 +104,7 @@ class SettingsItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12),
       width: double.maxFinite,
       height: 45,
-      decoration: BoxDecoration(
-        border: Border.symmetric(
-          horizontal: BorderSide(color: Colors.black38, width: 0.5),
-        ),
-      ),
+      decoration: kDividerBoxDecoration,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

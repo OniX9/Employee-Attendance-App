@@ -102,7 +102,7 @@ class LoginSignUpScreen extends StatelessWidget {
                                         PageTransition(
                                           const ForgotPasswordScreen(),
                                           direction:
-                                              Slide.bottom,
+                                              SlideFrom.bottom,
                                         ),
                                       ),
                                     ),
@@ -164,7 +164,7 @@ class LoginSignUpScreen extends StatelessWidget {
                                             PageTransition(
                                               AdminAcountCreateScreen(),
                                               direction:
-                                                  Slide.bottom,
+                                                  SlideFrom.bottom,
                                             ),
                                           );
                                         },

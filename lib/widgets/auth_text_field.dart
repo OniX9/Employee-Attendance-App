@@ -6,14 +6,23 @@ enum AuthType {
   name,
   email,
   password,
+  currency,
   phoneNumber,
+  designation,
+  dateOfBirth,
+  employeeName,
+  employeeAddress,
 }
 
 class AuthTextField extends StatelessWidget {
   final AuthType type;
+  final bool hidePrefixIcon;
+  final bool showObscureText;
 
   const AuthTextField(
     this.type, {
+    this.hidePrefixIcon = false,
+    this.showObscureText = false,
     super.key,
   });
 
@@ -29,16 +38,27 @@ class AuthTextField extends StatelessWidget {
           return 'password';
         case AuthType.phoneNumber:
           return 'Mobile NO';
+        case AuthType.designation:
+          return 'Designation ( Exe, Employee, Manager';
+        case AuthType.dateOfBirth:
+          return 'Date Of Birth';
+        case AuthType.employeeName:
+          return 'Employee Name';
+        case AuthType.employeeAddress:
+          return 'Employee Address';
+        case AuthType.currency:
+          return 'Currency Symbol';
         default:
           return 'Error !';
       }
     }
+
     IconData prefixIcon() {
       switch (type) {
         case AuthType.name:
           return Icons.person;
         case AuthType.email:
-          return Icons.mail ;
+          return Icons.mail;
         case AuthType.password:
           return Icons.lock;
         case AuthType.phoneNumber:
@@ -47,6 +67,7 @@ class AuthTextField extends StatelessWidget {
           return Icons.warning_amber;
       }
     }
+
     TextInputType? keyboardType() {
       switch (type) {
         case AuthType.name:
@@ -68,11 +89,11 @@ class AuthTextField extends StatelessWidget {
         keyboardType: keyboardType(),
         onChanged: (newText) {},
         style: kAuthTextStyle,
-        obscureText: type == AuthType.password,
+        obscureText: type == AuthType.password && !showObscureText,
         cursorColor: kPrimaryColorLight,
         decoration: kAuthInputDecoration.copyWith(
           labelText: labelText(),
-          prefixIcon: Padding(
+          prefixIcon: hidePrefixIcon ? null : Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Icon(
               prefixIcon(),

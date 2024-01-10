@@ -5,9 +5,11 @@ class CustomCard extends StatelessWidget {
   final double? width;
   final double? height;
   final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   const CustomCard({
     this.margin,
+    this.padding,
     this.height = 105,
     this.width,
     this.child,
@@ -18,6 +20,7 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: margin ?? EdgeInsets.only(top: 12),
+        padding: padding,
         width: width,
         height: height,
         decoration: BoxDecoration(

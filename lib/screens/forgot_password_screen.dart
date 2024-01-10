@@ -1,4 +1,5 @@
-import 'package:employee_attendance/widgets/custom_appbar.dart';
+import 'package:employee_attendance/widgets/my_appbar.dart';
+import 'package:employee_attendance/widgets/phone_no_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/widgets/call_action_button.dart';
@@ -36,45 +37,6 @@ class ForgotPasswordScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// CUSTOM WIDGETS
-class PhoneNoTextField extends StatelessWidget {
-  const PhoneNoTextField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 80,
-      child: Stack(
-        children: [
-          IntlPhoneField(
-            flagsButtonMargin: EdgeInsets.only(right: 10),
-            dropdownIconPosition: IconPosition.trailing,
-            dropdownIcon: Icon(Icons.arrow_drop_down, color: Colors.black,),
-            decoration: kAuthInputDecoration.copyWith(
-              labelText: 'Phone number',
-              labelStyle: DefaultTextStyle.of(context).style.copyWith(
-                    color: kPrimaryColorLight,
-                  ),
-            ),
-            initialCountryCode: 'US',
-            onChanged: (phone) {
-              print(phone.completeNumber);
-            },
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 65, top: 40),
-            width: 30,
-            height: 23,
-            color: Colors.white,
-          ),
-        ],
       ),
     );
   }

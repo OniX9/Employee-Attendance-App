@@ -46,12 +46,12 @@ class FingerIconAndAuthCheckButton extends StatelessWidget {
                   if (uiConsumer.isAdmin == false) {
                     Navigator.of(context).push(
                       PageTransition(EmployeeDashboardScreen(),
-                          direction: Slide.top),
+                          direction: SlideFrom.top),
                     );
                   } else {
                     Navigator.of(context).push(
                       PageTransition(AdminDashboardScreen(),
-                          direction: Slide.top,
+                          direction: SlideFrom.top,
                       ),
                     );
                   }

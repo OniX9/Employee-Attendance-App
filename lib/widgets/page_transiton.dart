@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class PageTransition extends PageRouteBuilder {
   final Widget page;
-  final Slide direction;
+  final SlideFrom direction;
 
   PageTransition(
     this.page, {
-    this.direction = Slide.bottom,
+    this.direction = SlideFrom.bottom,
   }) : super(
           pageBuilder: (context, animation, anotherAnimation) => page,
           transitionDuration: const Duration(milliseconds: 1900),
@@ -16,10 +16,10 @@ class PageTransition extends PageRouteBuilder {
               parent: animation,
             );
 
-            if (direction == Slide.bottom || direction == Slide.top) {
+            if (direction == SlideFrom.bottom || direction == SlideFrom.top) {
               // For Top & Bottom Transition
               return Align(
-                alignment: direction == Slide.bottom
+                alignment: direction == SlideFrom.bottom
                     ? Alignment.bottomCenter
                     : Alignment.topCenter,
                 child: SizeTransition(
@@ -31,7 +31,7 @@ class PageTransition extends PageRouteBuilder {
             } else {
               // For Left & Right Transition
               return Align(
-                alignment: direction == Slide.right
+                alignment: direction == SlideFrom.right
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 child: SizeTransition(
@@ -45,7 +45,7 @@ class PageTransition extends PageRouteBuilder {
         );
 }
 
-enum Slide {
+enum SlideFrom {
   top,
   bottom,
   left,
