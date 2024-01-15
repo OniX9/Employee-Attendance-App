@@ -47,11 +47,7 @@ class DashBoardListItem extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: kCardTitleTextStyle
                 ),
                 SizedBox(height: 8),
                 SizedBox(

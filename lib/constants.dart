@@ -10,6 +10,19 @@ TextStyle kAuthTextStyle = const TextStyle(
   color: Colors.black87,
   fontSize: 14,
 );
+
+TextStyle kCheckLabelTextStyle = const TextStyle(
+  color: Color(0xFF898888),
+  fontSize: 14,
+  fontWeight: FontWeight.w500,
+);
+
+TextStyle kCardTitleTextStyle = const TextStyle(
+  color: Color(0xFF616161),
+  fontSize: 15,
+  fontWeight: FontWeight.w500,
+);
+
 TextStyle kCardDescriptionTextStyle = const TextStyle(
   color: Color(0xFF757575),
   fontSize: 11,
@@ -27,9 +40,9 @@ TextStyle kSettingsTextStyle = const TextStyle(
 );
 
 TextStyle kPublicHolidaysTextStyle = TextStyle(
-    fontSize: 16.5,
-    fontWeight: FontWeight.w500,
-    color: Colors.grey[700],
+  fontSize: 16.5,
+  fontWeight: FontWeight.w500,
+  color: Colors.grey[700],
 );
 
 BoxDecoration kDividerBoxDecoration = const BoxDecoration(
@@ -40,11 +53,10 @@ BoxDecoration kDividerBoxDecoration = const BoxDecoration(
 
 InputDecoration kAuthInputDecoration = const InputDecoration(
   focusedBorder: UnderlineInputBorder(
-    borderSide: BorderSide(
-      color: Color(0xFF00AFE7),
-      width: 3,
-    )
-  ),
+      borderSide: BorderSide(
+    color: Color(0xFF00AFE7),
+    width: 3,
+  )),
   labelStyle: TextStyle(
     color: Colors.grey,
     fontSize: 14,

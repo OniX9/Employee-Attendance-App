@@ -2,6 +2,7 @@ import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/screens/admin_dashboard_screen.dart';
 import 'package:employee_attendance/widgets/auth_text_field.dart';
 import 'package:employee_attendance/widgets/blue_container_tag.dart';
+import 'package:employee_attendance/widgets/blue_tag_container.dart';
 import 'package:employee_attendance/widgets/custom_card.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:employee_attendance/widgets/phone_no_textfield.dart';
@@ -31,38 +32,233 @@ class AddEmployeeScreen extends StatelessWidget {
           ),
           children: [
             EmployeeInformationContainer(),
-            BlueTagContainer(title: 'Time Slots'),
-            BlueTagContainer(
-              title: 'Payment Info',
-              height: 300,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text('Payment Type'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Amount'),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: 50,
-                            child: TextField(
-                            ),
-                          ),
-                          Text('/Month'),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
+            TimeSlotsContainer(),
+            PaymentInfoContainer(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TimeSlotsContainer extends StatelessWidget {
+  const TimeSlotsContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlueTagContainer(
+      title: 'Time Slots',
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 12),
+            padding: EdgeInsets.only(left: 12),
+            height: 55,
+            color: Colors.cyan[100],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TimeSlotsTableHeading('Working Day', width: 70),
+                TimeSlotsTableHeading('From'),
+                TimeSlotsTableHeading('To'),
+                TimeSlotsTableHeading('Full Day Hours'),
+                TimeSlotsTableHeading('Allow Half Day?'),
+                TimeSlotsTableHeading('Half Day Hours'),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 12, bottom: 15),
+            child: Column(
+              children: [
+// TODO: App Logic decrs Opacity & reset settings, when first checkbox is false.
+                TimeSlotWidget(day: 'MON'),
+                TimeSlotWidget(day: 'TUE'),
+                TimeSlotWidget(day: 'WED'),
+                TimeSlotWidget(day: 'THU'),
+                TimeSlotWidget(day: 'FRI'),
+                TimeSlotWidget(day: 'SAT'),
+                TimeSlotWidget(day: 'SUN'),
+                SizedBox(height: 10),
+                Text(
+                  'Application will start misbehaving if you change already set working hours. You can change working hours only if employee has not any attendance yet.',
+                  style: kCardDescriptionTextStyle,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class TimeSlotWidget extends StatelessWidget {
+  final String day;
+  final bool isSelected;
+
+  const TimeSlotWidget({
+    required this.day,
+    this.isSelected = true,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: 70,
+          child: Row(
+            children: [
+              LabeledCheckBox(),
+              SizedBox(width: 7),
+              Text(
+                day,
+                style: TextStyle(color: Colors.grey[700]),
+                //TODO: change style to kCardTitleTextstyle,
               ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: 50,
+          child: Text(
+            '10:00 AM',
+            style: kCardDescriptionTextStyle.copyWith(
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 50,
+          child: Text(
+            '07:00 PM',
+            style: kCardDescriptionTextStyle.copyWith(
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 50,
+          child: Text(
+            '09:00',
+            style: kCardDescriptionTextStyle.copyWith(
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 50,
+          child: LabeledCheckBox(),
+        ),
+        SizedBox(
+          width: 50,
+          child: Text(
+            'SET',
+            style: kCardDescriptionTextStyle.copyWith(
+              color: Colors.grey[700],
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TimeSlotsTableHeading extends StatelessWidget {
+  final String text;
+  final double? width;
+
+  const TimeSlotsTableHeading(
+    this.text, {
+    this.width = 50,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      padding: EdgeInsets.only(right: 15),
+      alignment: Alignment.center,
+      child: Text(
+        text,
+        style: kCardDescriptionTextStyle.copyWith(
+            color: Colors.grey[700], fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+}
+
+class PaymentInfoContainer extends StatelessWidget {
+  const PaymentInfoContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlueTagContainer(
+      title: 'Payment Info',
+      height: 250,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 25, right: 25, top: 30),
+        child: Column(
+          children: [
+            PaymentTypeToggle(),
+            AmountLabelTextField(
+              //TODO: MAKE IS MONTHLY TRUE OR FALSE,
+              isMonthly: true,
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class AmountLabelTextField extends StatelessWidget {
+  final bool isMonthly;
+
+  const AmountLabelTextField({
+    required this.isMonthly,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          'Amount',
+          style: kCheckLabelTextStyle,
+        ),
+        SizedBox(width: 100),
+        Row(
+          children: [
+            SizedBox(
+              width: 80,
+              height: 20,
+              child: TextField(
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                  keyboardType: TextInputType.number,
+                  decoration: kAuthInputDecoration),
+            ),
+            SizedBox(height: 100),
+            Text(
+              isMonthly ? '/Month' : '/Day',
+              style: TextStyle(color: Colors.grey[300]),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
@@ -161,15 +357,22 @@ class _LabeledCheckBoxState extends State<LabeledCheckBox> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Checkbox(
-          value: isChecked,
-          onChanged: (newValue) => setState(
-            () {
-              isChecked = newValue;
-            },
+        SizedBox(
+          height: 24.0,
+          width: 24.0,
+          child: Checkbox(
+            value: isChecked,
+            onChanged: (newValue) => setState(
+              () {
+                isChecked = newValue;
+              },
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+            ),
           ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
         ),
         Text(widget.label),
       ],
@@ -177,48 +380,112 @@ class _LabeledCheckBoxState extends State<LabeledCheckBox> {
   }
 }
 
-class BlueTagContainer extends StatelessWidget {
-  //TODO: Transfer to widget dir.
-  final Widget child;
-  final double? height;
-  final String title;
-  final bool showProfilePic;
-
-  const BlueTagContainer({
-    required this.title,
-    this.child = const SizedBox(),
-    this.height,
-    this.showProfilePic = false,
+class PaymentTypeToggle extends StatelessWidget {
+  const PaymentTypeToggle({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return CustomCard(
-      width: double.maxFinite,
-      height: height,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BlueTag(
-                title: title,
-              ),
-              Visibility(
-                visible: showProfilePic,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 13, top: 13),
-                  child: ProfilePicture(
-                    radius: 35,
-                  ),
-                ),
-              )
-            ],
-          ),
-          child
-        ],
-      ),
+    return Row(
+      children: [
+        Text('Payment Type', style: kCheckLabelTextStyle),
+        Flexible(child: SizedBox(width: 60)),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //TODO: Add app logic to toggle monthly or daily.
+            LabeledCheckCircle(
+              value: true,
+              label: 'Monthly',
+              labelSpacing: 8,
+              labelStyle: kCheckLabelTextStyle,
+              onPressed: () {},
+            ),
+            SizedBox(height: 8),
+            LabeledCheckCircle(
+              value: false,
+              label: 'Daily',
+              labelSpacing: 8,
+              labelStyle: kCheckLabelTextStyle,
+              onPressed: () {},
+            ),
+          ],
+        )
+      ],
     );
   }
 }
+
+class LabeledCheckCircle extends StatelessWidget {
+  final String label;
+  final TextStyle? labelStyle;
+  final double? labelSpacing;
+  final bool value;
+  final Color color;
+  final void Function()? onPressed;
+
+  const LabeledCheckCircle(
+      {this.label = '',
+      this.value = true,
+      this.labelStyle,
+      this.labelSpacing = 5,
+      this.color = const Color(0xFF2195F1),
+      required this.onPressed,
+      super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        GestureDetector(
+          onTap: onPressed,
+          child: Container(
+            // OUTER CIRCLE
+            padding: EdgeInsets.all(1.2),
+            width: 15,
+            height: 15,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                width: 2,
+                color: value ? color : Color(0xFF747474),
+              ),
+            ),
+            child: Visibility(
+              visible: value,
+              child: Container(
+                // INNER CIRCLE
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: labelSpacing),
+        Text(label, style: labelStyle),
+      ],
+    );
+  }
+}
+
+// ADD EMPLOYEE TIME SLOT BUTTONS.
+// GestureDetector(
+// onTap: () {},
+// child: Container(
+// width: 50,
+// height: 30,
+// alignment: Alignment.center,
+// decoration: BoxDecoration(
+// color: kPrimaryColorLight,
+// borderRadius: BorderRadius.circular(3),
+// ),
+// child: Text(day,
+// style: TextStyle(color: Colors.grey[200]),
+// ),
+// ),
+// ),

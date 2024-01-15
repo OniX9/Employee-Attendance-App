@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class MenuButton extends StatelessWidget {
   final void Function()? onPressed;
+  final Color color;
 
   const MenuButton({
     required this.onPressed,
+    this.color = Colors.white,
     super.key,
   });
 
@@ -15,6 +17,7 @@ class MenuButton extends StatelessWidget {
       child: IconButton(
         onPressed: onPressed,
         icon: Icon(Icons.more_vert_rounded, size: 35),
+        color: color,
       ),
     );
   }

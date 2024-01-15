@@ -1,13 +1,16 @@
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/screens/add_employee_screen.dart';
+import 'package:employee_attendance/screens/admin_attendance_report_a_screen.dart';
+import 'package:employee_attendance/screens/present_employee_screen.dart';
 import 'package:employee_attendance/screens/public_holidays_screen.dart';
 import 'package:employee_attendance/screens/settings_screen.dart';
+import 'package:employee_attendance/screens/live_tracking_screen.dart';
+import 'package:employee_attendance/screens/view_employee_screen.dart';
 import 'package:employee_attendance/widgets/custom_card.dart';
 import 'package:employee_attendance/widgets/dashboard_profile.dart';
 import 'package:employee_attendance/widgets/day_and_date_text.dart';
 import 'package:employee_attendance/widgets/menu_button.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
-import 'package:employee_attendance/widgets/profile_pic.dart';
 import 'package:employee_attendance/widgets/dashboard_list_item.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -23,49 +26,52 @@ class AdminDashboardScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kBlueScaffoldColor,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.375,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage('assets/images/login/background.png'),
-                fit: BoxFit.fill,
-              )),
-              child: SafeArea(
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: MenuButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            PageTransition(
-                              direction: SlideFrom.right,
-                              SettingScreen(),
-                            ),
-                          );
-                        },
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.375,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage('assets/images/login/background.png'),
+                  fit: BoxFit.fill,
+                )),
+                child: SafeArea(
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: MenuButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              PageTransition(
+                                direction: SlideFrom.right,
+                                SettingScreen(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: DashboardProfile(),
-                    ),
-                  ],
+                      Align(
+                        alignment: Alignment.center,
+                        child: DashboardProfile(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SafeArea(
-                child: DashBoardListView(),
-              ),
-            )
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: SafeArea(
+                  child: DashBoardListView(),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -128,7 +134,14 @@ class DashBoardListView extends StatelessWidget {
                   description: 'Mark your daily attendance',
                   imageUrl:
                       "assets/images/admin_dashboard_only/view_employees.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        ViewEmployeeScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'TODAY PRESENT EMPLOYEES',
@@ -136,7 +149,14 @@ class DashBoardListView extends StatelessWidget {
                       'Check dates with all registered employees present or punch in/out',
                   imageUrl:
                       "assets/images/admin_dashboard_only/today_present_employees.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        PresentEmployeeScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'SALARY CALCULATOR',
@@ -151,14 +171,28 @@ class DashBoardListView extends StatelessWidget {
                   description:
                       'Check your month wie attendance reports in Chart format',
                   imageUrl: "assets/images/employee_dashboard/report.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        AdminAttendanceReportAScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'LIVE TRACKING',
                   description: 'Track only current location of employee',
                   imageUrl:
                       "assets/images/admin_dashboard_only/live_tracking.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        LiveTrackingScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'CHANGE PASSWORD',

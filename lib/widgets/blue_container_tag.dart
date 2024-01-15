@@ -12,7 +12,7 @@ class BlueTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 13),
+      margin: EdgeInsets.only(top: 25),
       height: 35,
       width: 220,
       decoration: BoxDecoration(
