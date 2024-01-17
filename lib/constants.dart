@@ -45,6 +45,12 @@ TextStyle kPublicHolidaysTextStyle = TextStyle(
   color: Colors.grey[700],
 );
 
+TextStyle kCalenderTextStyle = TextStyle(
+  fontSize: 11,
+  fontWeight: FontWeight.w500,
+  color: Colors.black,
+);
+
 BoxDecoration kDividerBoxDecoration = const BoxDecoration(
   border: Border.symmetric(
     horizontal: BorderSide(color: Colors.black38, width: 0.5),

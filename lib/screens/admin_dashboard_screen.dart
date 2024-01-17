@@ -1,6 +1,7 @@
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/screens/add_employee_screen.dart';
 import 'package:employee_attendance/screens/admin_attendance_report_a_screen.dart';
+import 'package:employee_attendance/screens/admin_salary_calculator_a_screen.dart';
 import 'package:employee_attendance/screens/present_employee_screen.dart';
 import 'package:employee_attendance/screens/public_holidays_screen.dart';
 import 'package:employee_attendance/screens/settings_screen.dart';
@@ -164,7 +165,14 @@ class DashBoardListView extends StatelessWidget {
                       'Check month wise attendance & calculate salary for particular employee',
                   imageUrl:
                       "assets/images/admin_dashboard_only/salary_calculator.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        AdminSalaryCalculatorAScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'VIEW ATTENDANCE REPORT',

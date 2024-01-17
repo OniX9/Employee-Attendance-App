@@ -1,6 +1,7 @@
 import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/services/brain.dart';
+import 'package:employee_attendance/widgets/call_action_button.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -29,24 +30,10 @@ class AdminAttendanceReportBScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: MaterialButton(
-                onPressed: () {},
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                color: kPrimaryColorLight,
-                height: 45,
-                minWidth: double.maxFinite,
-                child: Text(
-                  'Show Report',
-                  style: kCardTitleTextStyle.copyWith(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+            CallActionButton(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              label: 'Show Report',
+              onPressed: () {},
             ),
             Expanded(
               child: Padding(
@@ -146,6 +133,7 @@ class BottomReportHeadings extends StatelessWidget {
         color: kBlueScaffoldColor,
         child: Text(
           text,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: color,
             fontSize: 10,
@@ -158,7 +146,7 @@ class BottomReportHeadings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.only(left: 20, right: 30),
       width: double.maxFinite,
       height: 50,
       decoration: BoxDecoration(
@@ -174,10 +162,10 @@ class BottomReportHeadings extends StatelessWidget {
         children: [
           _buildHeadingText('Month'),
           Expanded(child: SizedBox()),
-          _buildHeadingText('No Punch...', color: Colors.green, width: 75),
-          _buildHeadingText('Present Day', color: Colors.blue[600], width: 73),
+          _buildHeadingText('No Punch...', color: Colors.green, width: 60),
+          _buildHeadingText('Present Day', color: Colors.blue[600], width: 65),
           _buildHeadingText('Half Day', color: Colors.cyan, width: 55),
-          _buildHeadingText('Present But...', color: Colors.red, width: 90),
+          _buildHeadingText('Present But...', color: Colors.red, width: 65),
         ],
       ),
     );
@@ -235,13 +223,13 @@ class BottomReportSlot extends StatelessWidget {
                 Expanded(child: SizedBox()),
                 _buildHeadingText(
                   noPunchOut.toString(),
-                  color: Colors.green[600],
-                  width: 73,
+                  color: Colors.green,
+                  width: 60,
                 ),
                 _buildHeadingText(
                   presentDay.toString(),
-                  color: Colors.green[600],
-                  width: 73,
+                  color: Colors.blue[600],
+                  width: 65,
                 ),
                 _buildHeadingText(
                   halfDay.toString(),
@@ -251,7 +239,7 @@ class BottomReportSlot extends StatelessWidget {
                 _buildHeadingText(
                   presentButAbsent.toString(),
                   color: Colors.red,
-                  width: 90,
+                  width: 65,
                 ),
               ],
             ),

@@ -1,4 +1,5 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/screens/admin_salary_calculator_b_screen.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:employee_attendance/widgets/profile_pic.dart';
@@ -6,8 +7,8 @@ import 'package:flutter/material.dart';
 
 import 'admin_attendance_report_b_screen.dart';
 
-class AdminAttendanceReportAScreen extends StatelessWidget {
-  const AdminAttendanceReportAScreen({super.key});
+class AdminSalaryCalculatorAScreen extends StatelessWidget {
+  const AdminSalaryCalculatorAScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,7 @@ class SelectEmployeeContainer extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           PageTransition(
-            AdminAttendanceReportBScreen(name),
+            AdminSalaryCalculatorBScreen(name),
             direction: SlideFrom.right,
           ),
         );

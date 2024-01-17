@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 class CallActionButton extends StatelessWidget {
   final String label;
+  final double? width;
   final EdgeInsetsGeometry? margin;
   final void Function()? onPressed;
 
   const CallActionButton({
+    this.width = double.maxFinite,
     this.margin = const EdgeInsets.symmetric(vertical: 10),
     required this.label,
     required this.onPressed,
@@ -18,10 +20,10 @@ class CallActionButton extends StatelessWidget {
     return RawMaterialButton(
       onPressed: onPressed,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        height: 42,
+        margin: margin,
+        height: 44,
         alignment: Alignment.center,
-        width: double.maxFinite,
+        width: width,
         decoration: BoxDecoration(
           color: kPrimaryColorLight,
           borderRadius: BorderRadius.circular(6),
@@ -29,6 +31,7 @@ class CallActionButton extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
+            fontSize: 16,
             color: Colors.white,
           ),
         ),
