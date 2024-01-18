@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // home: const OnBoardingScreen(),
-        // home: LoginSignUpScreen(),
-        home: AdminSalaryCalculatorBScreen('Ola James'),
+        home: LoginSignUpScreen(),
+        // home: AdminSalaryCalculatorBScreen('Ola James'),
       ),
     );
   }

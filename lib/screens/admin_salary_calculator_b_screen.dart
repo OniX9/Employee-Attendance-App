@@ -381,47 +381,108 @@ class GetCalenderHolidayPunchInOutBox extends StatelessWidget {
     return isDateAboveToday;
   }
 
-  bool hasEvent(List mappedDateMonthCache) {
+  Map<String, dynamic> dateHasEvent(List mappedDateMonthCache) {
     Map<String, int> dateMonthMap = {'day': date.day, 'month': date.month};
-    bool doesDateHaveEvent = mappedDateMonthCache.any((map) =>
+    int index = mappedDateMonthCache.indexWhere((map) =>
         map['day'] == dateMonthMap['day'] &&
         map['month'] == dateMonthMap['month']);
-    print('doesDateHaveEvent: $doesDateHaveEvent');
-    return doesDateHaveEvent;
+    bool doesDateHaveEvent = index != -1;
+    return {'dateHasEvent': doesDateHaveEvent, 'index': index};
   }
 
   @override
   Widget build(BuildContext context) {
     var calenderDataConsumer = Provider.of<CalenderEventsProvider>(context);
-    return isInMonth &&
-            !_isAboveToday() &&
-            ! hasEvent(calenderDataConsumer.dateMonthCache)
-        ? Container(
-            padding: EdgeInsets.all(2),
-            margin: EdgeInsets.only(top: 3),
-            height: 30,
-            width: 40,
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'N/A',
+    Map<String, dynamic> hasEvent =
+        dateHasEvent(calenderDataConsumer.dateMonthCache);
+    if (!hasEvent['dateHasEvent']) {
+      return isInMonth && !_isAboveToday()
+          ? Container(
+              padding: EdgeInsets.all(2),
+              margin: EdgeInsets.only(top: 3),
+              height: 30,
+              width: 40,
+              decoration: BoxDecoration(
+                color: Colors.red[400],
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'N/A',
+                    style: kCalenderTextStyle.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    'N/A',
+                    style: kCalenderTextStyle.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : SizedBox(height: 30);
+    } else {
+      String? punchIn =
+          calenderDataConsumer.calenderEvents[hasEvent['index']].punchIn;
+      String? punchOut =
+          calenderDataConsumer.calenderEvents[hasEvent['index']].punchOut;
+      String? nonWorkingDayReason = calenderDataConsumer
+          .calenderEvents[hasEvent['index']].nonWorkingDayReason;
+
+      if (nonWorkingDayReason == null) {
+        return isInMonth && !_isAboveToday()
+            ? Container(
+                padding: EdgeInsets.all(2),
+                margin: EdgeInsets.only(top: 3),
+                height: 30,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Colors.green[400],
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      punchIn ?? 'N/A',
+                      style: kCalenderTextStyle.copyWith(
+                        fontSize: punchIn == null ? 11 : 9,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      punchOut ?? 'N/A',
+                      style: kCalenderTextStyle.copyWith(
+                        fontSize: punchOut == null ? 11 : 9,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : SizedBox(height: 30);
+      } else {
+        return isInMonth && !_isAboveToday()
+            ? Container(
+          alignment: Alignment.center,
+                padding: EdgeInsets.all(2),
+                margin: EdgeInsets.only(top: 3),
+                height: 30,
+                width: 40,
+                child: Text(
+                  nonWorkingDayReason,
+                  textAlign: TextAlign.center,
                   style: kCalenderTextStyle.copyWith(
-                    color: Colors.white,
+                    fontSize: 10,
+                    color: Colors.red,
                   ),
                 ),
-                Text(
-                  'N/A',
-                  style: kCalenderTextStyle.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          )
-        : SizedBox(height: 30);
+              )
+            : SizedBox(height: 30);
+      }
+    }
   }
 }

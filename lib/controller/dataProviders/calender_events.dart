@@ -5,11 +5,15 @@ import 'package:employee_attendance/models/daily_calender_event.dart';
 class CalenderEventsProvider with ChangeNotifier {
   List<Map> dateMonthCache = [
     {'day': 1, 'month': 1},
+    {'day': 3, 'month': 1},
     {'day': 18, 'month': 3},
     {'day': 9, 'month': 2},
   ];
 
   List<DailyCalenderEvent> _calenderEvents = [
+    DailyCalenderEvent(nonWorkingDayReason: 'New year', day: 1, month: 1),
+    DailyCalenderEvent(
+        nonWorkingDayReason: null, day: 3, month: 1, punchIn: '9:00PM'),
     DailyCalenderEvent(nonWorkingDayReason: 'New year', day: 1, month: 1),
     DailyCalenderEvent(nonWorkingDayReason: 'Ted talk', day: 18, month: 3),
     DailyCalenderEvent(nonWorkingDayReason: 'Meet & mingle', day: 9, month: 2),
