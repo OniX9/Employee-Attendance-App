@@ -1,6 +1,8 @@
+import 'package:employee_attendance/controller/dataProviders/calender_events.dart';
 import 'package:employee_attendance/controller/dataProviders/public_holidays.dart';
 import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
 import 'package:employee_attendance/controller/uiProviders/public_holidays_ui.dart';
+import 'package:employee_attendance/screens/admin_salary_calculator_b_screen.dart';
 import 'package:employee_attendance/screens/onboarding_screen.dart';
 import 'package:employee_attendance/test.dart';
 import 'package:calendar_view/calendar_view.dart';
@@ -15,6 +17,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => AdminUIProvider()),
         ChangeNotifierProvider(create: (context) => PublicHolidaysUIProvider()),
         ChangeNotifierProvider(create: (context) => PublicHolidaysProvider()),
+        ChangeNotifierProvider(create: (context) => CalenderEventsProvider()),
       ],
       child: const MyApp(),
     ),
@@ -39,8 +42,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // home: const OnBoardingScreen(),
-        home: LoginSignUpScreen(),
-        // home: TestUI(),
+        // home: LoginSignUpScreen(),
+        home: AdminSalaryCalculatorBScreen('Ola James'),
       ),
     );
   }

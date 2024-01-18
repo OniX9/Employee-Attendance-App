@@ -1,8 +1,10 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/controller/dataProviders/calender_events.dart';
 import 'package:employee_attendance/widgets/call_action_button.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminSalaryCalculatorBScreen extends StatelessWidget {
   final String workerID;
@@ -141,10 +143,50 @@ class CalculateAmountButton extends StatelessWidget {
 }
 
 // 3.
-class CalenderContainer extends StatelessWidget {
+class CalenderContainer extends StatefulWidget {
   const CalenderContainer({
     super.key,
   });
+
+  @override
+  State<CalenderContainer> createState() => _CalenderContainerState();
+}
+
+class _CalenderContainerState extends State<CalenderContainer> {
+  DateTime currentDateOnCalender = DateTime.now();
+  DateTime currentTappedDate = DateTime.now();
+  List<Map> dateMonthCache = [];
+
+  String _getMonthText(int monthInt) {
+    switch (monthInt) {
+      case 1:
+        return 'Jan';
+      case 2:
+        return 'Feb';
+      case 3:
+        return 'Mar';
+      case 4:
+        return 'Apr';
+      case 5:
+        return 'May';
+      case 6:
+        return 'Jun';
+      case 7:
+        return 'Jul';
+      case 8:
+        return 'Aug';
+      case 9:
+        return 'Sep';
+      case 10:
+        return 'Oct';
+      case 11:
+        return 'Nov';
+      case 12:
+        return 'Dec';
+      default:
+        return '';
+    }
+  }
 
   String _getWeekDayText(int weekDayInt) {
     switch (weekDayInt) {
@@ -167,52 +209,91 @@ class CalenderContainer extends StatelessWidget {
     }
   }
 
+  bool _isCalendarInCurrentMonth() {
+    bool isInCurrentMonth = currentDateOnCalender.month == DateTime.now().month;
+    bool isInCurrentYear = currentDateOnCalender.year == DateTime.now().year;
+    bool res = isInCurrentMonth && isInCurrentYear;
+    return res;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: MonthView(
         controller: EventController(),
         showBorder: false,
+        headerStringBuilder: (DateTime date, {DateTime? secondaryDate}) {
+          return _isCalendarInCurrentMonth()
+              ? '${_getMonthText(date.month)} ${date.year}'
+              : '${_getMonthText(date.month)} ${date.year}';
+        },
+        headerStyle: HeaderStyle(
+          headerTextStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+          rightIconVisible: !_isCalendarInCurrentMonth(),
+        ),
+        // Custom UI for Week days.
         weekDayBuilder: (weekDayInt) {
-          // to provide custom UI for Week day cells.
-          return Text(
-            _getWeekDayText(weekDayInt),
-            textAlign: TextAlign.center,
-            style: kCalenderTextStyle.copyWith(
-              color: kPrimaryColorHeavy,
-            ),
+          return Column(
+            children: [
+              Container(
+                // A Divider
+                margin: EdgeInsets.only(bottom: 6),
+                width: double.maxFinite,
+                color: Colors.grey[300],
+                height: 1,
+              ),
+              Text(
+                _getWeekDayText(weekDayInt),
+                textAlign: TextAlign.center,
+                style: kCalenderTextStyle.copyWith(
+                  color: kPrimaryColorHeavy,
+                ),
+              ),
+            ],
           );
         },
+        // Custom UI for Month cells.
         cellBuilder: (date, events, isToday, isInMonth) {
-          // to provide custom UI for Month cells.
           return Container(
             alignment: Alignment.center,
             child: Column(
               children: [
                 Expanded(child: SizedBox()),
-                BlueCalendarMarker(
+                new BlueCalendarMarker(
+                  currentTappedDate: currentTappedDate,
                   isToday: isToday,
+                  date: date,
                   child: Text(
                     isInMonth ? date.day.toString() : '',
-                    style: kCalenderTextStyle,
+                    style: kCalenderTextStyle.copyWith(
+                      color: isToday ? Colors.white : Colors.black,
+                    ),
                   ),
                 ),
-                GetCalenderHolidayPunchInOutBox(
+                new GetCalenderHolidayPunchInOutBox(
+                  date: date,
                   isInMonth: isInMonth,
+                  // dateEventCache:,
                 )
               ],
             ),
           );
         },
-        minMonth: DateTime(1990),
-        maxMonth: DateTime(2050),
+        minMonth: DateTime(2005),
+        maxMonth: DateTime.now(),
         initialMonth: DateTime.now(),
         cellAspectRatio: 3 / 3.5,
-        onPageChange: (date, pageIndex) => print("$date, $pageIndex"),
-        onCellTap: (events, date) {
+        onPageChange: (newDate, pageIndex) {
+          setState(() {
+            currentDateOnCalender = newDate;
+          });
+          print("$newDate, $pageIndex");
+        },
+        onCellTap: (events, newDate) {
           // Implement callback when user taps on a cell.
-          print(events);
-          print(date);
+          setState(() {
+            currentTappedDate = newDate;
+          });
         },
         startDay: WeekDays.sunday, // To change the first day of the week.
         // This callback will only work if cellBuilder is null.
@@ -224,46 +305,97 @@ class CalenderContainer extends StatelessWidget {
 }
 
 class BlueCalendarMarker extends StatelessWidget {
+  final DateTime currentTappedDate;
+  final DateTime date;
   final bool isToday;
   final Widget child;
 
   const BlueCalendarMarker({
+    required this.currentTappedDate,
+    required this.date,
     required this.isToday,
     required this.child,
     super.key,
   });
+  bool _isAboveToday() {
+    bool isTappedDateAboveToday = DateUtils.dateOnly(currentTappedDate).isAfter(
+      DateUtils.dateOnly(DateTime.now()),
+    );
+    return isTappedDateAboveToday;
+  }
+
+  bool _isCurrentSelected() {
+    bool isTodayTapped =
+        DateUtils.dateOnly(currentTappedDate) == DateUtils.dateOnly(date);
+    return isTodayTapped;
+  }
 
   @override
   Widget build(BuildContext context) {
     Color isMarkerVisible = isToday ? kPrimaryColorLight : Colors.transparent;
-    return Container(
-      padding: EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: isMarkerVisible, width: 1),
-      ),
+    Color isOutterMarkerVisible = _isCurrentSelected() && !_isAboveToday()
+        ? kPrimaryColorLight
+        : Colors.transparent;
+    return AnimatedScale(
+      duration: Duration(milliseconds: 1000),
+      scale: _isCurrentSelected() && !_isAboveToday() ? 1.19 : 1,
+      curve: Curves.elasticInOut,
       child: Container(
-        padding: EdgeInsets.only(right: 2),
-        alignment: Alignment.center,
-        width: 18,
-        height: 18,
+        padding: EdgeInsets.all(2),
         decoration: BoxDecoration(
-          color: isMarkerVisible,
           shape: BoxShape.circle,
+          border: Border.all(color: isOutterMarkerVisible, width: 1),
         ),
-        child: child,
+        child: Container(
+          padding: EdgeInsets.only(right: 0),
+          alignment: Alignment.center,
+          width: 18,
+          height: 18,
+          decoration: BoxDecoration(
+            color: isMarkerVisible,
+            shape: BoxShape.circle,
+          ),
+          child: child,
+        ),
       ),
     );
   }
 }
 
 class GetCalenderHolidayPunchInOutBox extends StatelessWidget {
+  final DateTime date;
   final bool isInMonth;
-  const GetCalenderHolidayPunchInOutBox({required this.isInMonth, super.key});
+  // final List<Map> dateEventCache;
+
+  const GetCalenderHolidayPunchInOutBox({
+    required this.date,
+    required this.isInMonth,
+    // required this.dateEventCache,
+    super.key,
+  });
+
+  bool _isAboveToday() {
+    bool isDateAboveToday = DateUtils.dateOnly(date).isAfter(
+      DateUtils.dateOnly(DateTime.now()),
+    );
+    return isDateAboveToday;
+  }
+
+  bool hasEvent(List mappedDateMonthCache) {
+    Map<String, int> dateMonthMap = {'day': date.day, 'month': date.month};
+    bool doesDateHaveEvent = mappedDateMonthCache.any((map) =>
+        map['day'] == dateMonthMap['day'] &&
+        map['month'] == dateMonthMap['month']);
+    print('doesDateHaveEvent: $doesDateHaveEvent');
+    return doesDateHaveEvent;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return isInMonth && true
+    var calenderDataConsumer = Provider.of<CalenderEventsProvider>(context);
+    return isInMonth &&
+            !_isAboveToday() &&
+            ! hasEvent(calenderDataConsumer.dateMonthCache)
         ? Container(
             padding: EdgeInsets.all(2),
             margin: EdgeInsets.only(top: 3),
