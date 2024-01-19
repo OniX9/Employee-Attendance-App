@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 
 class ClickableText extends StatelessWidget {
   final String data;
+  final double? fontSize;
   final void Function()? onPressed;
 
   const ClickableText(this.data, {
     required this.onPressed,
+    this.fontSize,
     super.key,
   });
 
@@ -16,6 +18,7 @@ class ClickableText extends StatelessWidget {
       onTap: onPressed,
       child: Text(data,
         style: TextStyle(
+          fontSize: fontSize,
           fontWeight: FontWeight.w500,
           color: kPrimaryColorLight,
         ),

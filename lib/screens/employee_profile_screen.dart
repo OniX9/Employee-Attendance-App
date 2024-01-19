@@ -6,15 +6,15 @@ import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:employee_attendance/widgets/phone_no_textfield.dart';
 import 'package:flutter/material.dart';
 
-class AddEmployeeScreen extends StatelessWidget {
-  const AddEmployeeScreen({super.key});
+class EmployeeProfileScreen extends StatelessWidget {
+  const EmployeeProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
         context,
-        label: 'Add Employee',
+        label: 'Profile',
         trailing: IconButton(
           onPressed: () {},
           icon: Icon(Icons.check_rounded),
@@ -38,6 +38,7 @@ class AddEmployeeScreen extends StatelessWidget {
   }
 }
 
+// 2.
 class TimeSlotsContainer extends StatelessWidget {
   const TimeSlotsContainer({
     super.key,
@@ -92,7 +93,7 @@ class TimeSlotsContainer extends StatelessWidget {
   }
 }
 
-class TimeSlotWidget extends StatelessWidget {
+class TimeSlotWidget extends StatefulWidget {
   final String day;
   final bool isSelected;
 
@@ -103,28 +104,27 @@ class TimeSlotWidget extends StatelessWidget {
   });
 
   @override
+  State<TimeSlotWidget> createState() => _TimeSlotWidgetState();
+}
+
+class _TimeSlotWidgetState extends State<TimeSlotWidget> {
+  bool isSelected = true;
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          width: 70,
-          child: Row(
-            children: [
-              LabeledCheckBox(),
-              SizedBox(width: 7),
-              Text(
-                day,
-                style: TextStyle(color: Colors.grey[700]),
-                //TODO: change style to kCardTitleTextstyle,
-              ),
-            ],
-          ),
+        BlueWeekDayButton(
+          value: isSelected,
+          day: widget.day,
+          onChanged: () {
+            setState(() => isSelected = !isSelected);
+          },
         ),
         SizedBox(
           width: 50,
           child: Text(
-            '10:00 AM',
+            isSelected ? '10:00 AM' : 'SET',
             style: kCardDescriptionTextStyle.copyWith(
               color: Colors.grey[700],
               fontWeight: FontWeight.w500,
@@ -134,7 +134,7 @@ class TimeSlotWidget extends StatelessWidget {
         SizedBox(
           width: 50,
           child: Text(
-            '07:00 PM',
+            isSelected ? '07:00 PM' : 'SET',
             style: kCardDescriptionTextStyle.copyWith(
               color: Colors.grey[700],
               fontWeight: FontWeight.w500,
@@ -144,16 +144,19 @@ class TimeSlotWidget extends StatelessWidget {
         SizedBox(
           width: 50,
           child: Text(
-            '09:00',
+            isSelected ? '09:00' : '00:00',
             style: kCardDescriptionTextStyle.copyWith(
               color: Colors.grey[700],
               fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        SizedBox(
-          width: 50,
-          child: LabeledCheckBox(),
+        Opacity(
+          opacity: isSelected ? 1 : 0.2,
+          child: SizedBox(
+            width: 50,
+            child: LabeledCheckBox(),
+          ),
         ),
         SizedBox(
           width: 50,
@@ -166,6 +169,46 @@ class TimeSlotWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class BlueWeekDayButton extends StatelessWidget {
+  final bool value;
+  final void Function() onChanged;
+
+  const BlueWeekDayButton({
+    required this.onChanged,
+    required this.value,
+    required this.day,
+    super.key,
+  });
+
+  final String day;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onChanged,
+      child: Container(
+        //NOTE: Total Container width is 70 add the padding width
+        width: 50,
+        height: 25,
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(right: 20, top: 5),
+        decoration: value
+            ? BoxDecoration(
+                color: kPrimaryColorLight,
+                borderRadius: BorderRadius.circular(3),
+              )
+            : BoxDecoration(
+                borderRadius: BorderRadius.circular(3),
+                border: Border.all(width: 2, color: Colors.black12)),
+        child: Text(
+          day,
+          style: TextStyle(color: value ? Colors.grey[200] : Colors.black87),
+        ),
+      ),
     );
   }
 }
@@ -195,6 +238,7 @@ class TimeSlotsTableHeading extends StatelessWidget {
   }
 }
 
+// 3.
 class PaymentInfoContainer extends StatelessWidget {
   const PaymentInfoContainer({
     super.key,
@@ -209,7 +253,7 @@ class PaymentInfoContainer extends StatelessWidget {
         padding: const EdgeInsets.only(left: 25, right: 25, top: 30),
         child: Column(
           children: [
-            PaymentTypeToggle(),
+            PaymentTypeTexts(),
             AmountLabelTextField(
               //TODO: MAKE IS MONTHLY TRUE OR FALSE,
               isMonthly: true,
@@ -217,6 +261,29 @@ class PaymentInfoContainer extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class PaymentTypeTexts extends StatelessWidget {
+  const PaymentTypeTexts({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text('Payment Type',
+            style: kCheckLabelTextStyle.copyWith(
+              color: Colors.grey[700],
+            )),
+        Flexible(child: SizedBox(width: 60)),
+        Text('Monthly Wise',
+            style: kCheckLabelTextStyle.copyWith(
+              color: kPrimaryColorLight,
+            )),
+      ],
     );
   }
 }
@@ -235,23 +302,21 @@ class AmountLabelTextField extends StatelessWidget {
       children: [
         Text(
           'Amount',
-          style: kCheckLabelTextStyle,
+          style: kCheckLabelTextStyle.copyWith(
+            color: Colors.grey[700],
+          ),
         ),
         SizedBox(width: 100),
         Row(
           children: [
-            SizedBox(
-              width: 80,
-              height: 20,
-              child: TextField(
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
-                  keyboardType: TextInputType.number,
-                  decoration: kAuthInputDecoration),
+            Text(
+              '₦',
+              style: TextStyle(color: Colors.grey[800], fontSize: 14),
             ),
             SizedBox(height: 100),
             Text(
-              isMonthly ? '/Month' : '/Day',
-              style: TextStyle(color: Colors.grey[300]),
+              isMonthly ? '50000 / Month' : '50000 / Day',
+              style: TextStyle(color: Colors.grey[600]),
             ),
           ],
         )
@@ -261,6 +326,7 @@ class AmountLabelTextField extends StatelessWidget {
 }
 
 // **CUSTOM WIDGETS**
+// 1.
 class EmployeeInformationContainer extends StatelessWidget {
   const EmployeeInformationContainer({
     super.key,
@@ -277,58 +343,37 @@ class EmployeeInformationContainer extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AuthTextField(
-              AuthType.employeeName,
-              hidePrefixIcon: true,
+            EmployeeDetailsTextField(
+              title: 'Employee Name',
+              details: 'Ola James',
             ),
-            AuthTextField(
-              AuthType.employeeAddress,
-              hidePrefixIcon: true,
+            EmployeeDetailsTextField(
+              title: 'Employee Address',
+              details: '123, street, city, state',
             ),
-            AuthTextField(
-              AuthType.dateOfBirth,
-              hidePrefixIcon: true,
+            EmployeeDetailsTextField(
+              title: 'Date Of Birth',
+              details: '15 JAN 1990',
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: PhoneNoTextField(
-                disableLengthCheck: true,
-              ),
+            EmployeeDetailsTextField(
+              title: 'Mobile No',
+              details: '1234567890',
             ),
-            AuthTextField(
-              AuthType.email,
-              hidePrefixIcon: true,
+            EmployeeDetailsTextField(
+              title: 'Email Id',
+              details: 'olajames@example.com',
             ),
-            AuthTextField(
-              AuthType.password,
-              hidePrefixIcon: true,
-              showObscureText: true,
+            EmployeeDetailsTextField(
+              title: 'Password',
+              details: '!james123#',
             ),
-            AuthTextField(
-              AuthType.designation,
-              hidePrefixIcon: true,
+            EmployeeDetailsTextField(
+              title: 'Designation ( Exe, Employee, Manager',
+              details: 'Employee',
             ),
-            AuthTextField(
-              AuthType.currency,
-              hidePrefixIcon: true,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(13),
-              child: Text(
-                'Notify me when this Employee Do Punch In/Out',
-                style: kCardDescriptionTextStyle,
-              ),
-            ),
-            Row(
-              children: [
-                LabeledCheckBox(
-                  label: 'Punch In',
-                ),
-                SizedBox(width: 60),
-                LabeledCheckBox(
-                  label: 'Punch Out',
-                ),
-              ],
+            EmployeeDetailsTextField(
+              title: 'Currency Symbo',
+              details: '₦',
             ),
           ],
         ),
@@ -337,112 +382,38 @@ class EmployeeInformationContainer extends StatelessWidget {
   }
 }
 
-class PaymentTypeToggle extends StatelessWidget {
-  const PaymentTypeToggle({
+class EmployeeDetailsTextField extends StatelessWidget {
+  final String title;
+  final String details;
+  const EmployeeDetailsTextField({
+    required this.title,
+    required this.details,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text('Payment Type', style: kCheckLabelTextStyle),
-        Flexible(child: SizedBox(width: 60)),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //TODO: Add app logic to toggle monthly or daily.
-            LabeledCheckCircle(
-              value: true,
-              label: 'Monthly',
-              labelSpacing: 8,
-              labelStyle: kCheckLabelTextStyle,
-              onPressed: () {},
-            ),
-            SizedBox(height: 8),
-            LabeledCheckCircle(
-              value: false,
-              label: 'Daily',
-              labelSpacing: 8,
-              labelStyle: kCheckLabelTextStyle,
-              onPressed: () {},
-            ),
-          ],
-        )
-      ],
+    return SizedBox(
+      height: 50,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: kCardDescriptionTextStyle),
+          SizedBox(height: 8),
+          SelectableText(details,
+              style: kAuthTextStyle.copyWith(
+                color: Colors.grey[700],
+                fontWeight: FontWeight.w500,
+              )),
+          SizedBox(height: 3),
+          Container(
+            //Divider
+            width: double.maxFinite,
+            height: 1,
+            color: Colors.black,
+          )
+        ],
+      ),
     );
   }
 }
-
-class LabeledCheckCircle extends StatelessWidget {
-  final String label;
-  final TextStyle? labelStyle;
-  final double? labelSpacing;
-  final bool value;
-  final Color color;
-  final void Function()? onPressed;
-
-  const LabeledCheckCircle(
-      {this.label = '',
-      this.value = true,
-      this.labelStyle,
-      this.labelSpacing = 5,
-      this.color = const Color(0xFF2195F1),
-      required this.onPressed,
-      super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onTap: onPressed,
-          child: Container(
-            // OUTER CIRCLE
-            padding: EdgeInsets.all(1.2),
-            width: 15,
-            height: 15,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                width: 2,
-                color: value ? color : Color(0xFF747474),
-              ),
-            ),
-            child: Visibility(
-              visible: value,
-              child: Container(
-                // INNER CIRCLE
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: color,
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: labelSpacing),
-        Text(label, style: labelStyle),
-      ],
-    );
-  }
-}
-
-// ADD EMPLOYEE TIME SLOT BUTTONS.
-// GestureDetector(
-// onTap: () {},
-// child: Container(
-// width: 50,
-// height: 30,
-// alignment: Alignment.center,
-// decoration: BoxDecoration(
-// color: kPrimaryColorLight,
-// borderRadius: BorderRadius.circular(3),
-// ),
-// child: Text(day,
-// style: TextStyle(color: Colors.grey[200]),
-// ),
-// ),
-// ),

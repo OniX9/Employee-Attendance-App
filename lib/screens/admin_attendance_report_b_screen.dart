@@ -1,10 +1,15 @@
 import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/controller/uiProviders/attendance_report_ui.dart';
 import 'package:employee_attendance/services/brain.dart';
 import 'package:employee_attendance/widgets/call_action_button.dart';
+import 'package:employee_attendance/widgets/clickable_text.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
+
+final bool isPopup = false;
 
 class AdminAttendanceReportBScreen extends StatelessWidget {
   final String workersID;
@@ -12,8 +17,8 @@ class AdminAttendanceReportBScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var reportUIConsumer = Provider.of<AttendanceReportUIProvider>(context);
     final double bottomSheetMinExtent = 150;
-
     Widget _backgroundWidget() {
       return Scaffold(
         appBar: MyAppBar(context, label: workersID),
@@ -23,9 +28,12 @@ class AdminAttendanceReportBScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                MonthFromToButton(),
+                MonthFromToButton(
+                  onPressed: (){},
+                ),
                 SizedBox(width: 23),
                 MonthFromToButton(
+                  onPressed: (){},
                   isStartingMonth: false,
                 ),
               ],
@@ -33,7 +41,9 @@ class AdminAttendanceReportBScreen extends StatelessWidget {
             CallActionButton(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               label: 'Show Report',
-              onPressed: () {},
+              onPressed: () {
+                reportUIConsumer.toggleReportPopUpVisible();
+              },
             ),
             Expanded(
               child: Padding(
@@ -105,15 +115,21 @@ class AdminAttendanceReportBScreen extends StatelessWidget {
       );
     }
 
-    return DraggableBottomSheet(
-      minExtent: bottomSheetMinExtent,
-      useSafeArea: false,
-      curve: Curves.easeIn,
-      previewWidget: _previewWidget(),
-      expandedWidget: _expandedWidget(),
-      backgroundWidget: _backgroundWidget(),
-      maxExtent: 390,
-      onDragging: (pos) {},
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        DraggableBottomSheet(
+          minExtent: bottomSheetMinExtent,
+          useSafeArea: false,
+          curve: Curves.easeIn,
+          previewWidget: _previewWidget(),
+          expandedWidget: _expandedWidget(),
+          backgroundWidget: _backgroundWidget(),
+          maxExtent: 390,
+          onDragging: (pos) {},
+        ),
+        PopUpReport(),
+      ],
     );
   }
 }
@@ -326,8 +342,10 @@ class AttendancePieChart extends StatelessWidget {
 // 2.
 class MonthFromToButton extends StatelessWidget {
   final bool isStartingMonth;
+  final void Function() onPressed;
 
   const MonthFromToButton({
+    required this.onPressed,
     this.isStartingMonth = true,
     super.key,
   });
@@ -335,6 +353,7 @@ class MonthFromToButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onPressed,
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 15),
         height: 30,
@@ -370,3 +389,157 @@ class MonthFromToButton extends StatelessWidget {
 }
 
 // 3.
+class PopUpReport extends StatelessWidget {
+
+  const PopUpReport({
+    super.key,
+  });
+
+  final TextStyle reportTextStyle = const TextStyle(
+    color: Color(0xB60B4DA5),
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
+
+  SizedBox _buildHeadingText(String text,
+      {Color? color = Colors.white, double? width}) {
+    return SizedBox(
+      width: width,
+      child: Text(text,
+          textAlign: TextAlign.center,
+          style: reportTextStyle.copyWith(
+            color: color,
+          )),
+    );
+  }
+
+  SizedBox _buildBodyText(String text, {double? width}) {
+    return SizedBox(
+      width: width,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: reportTextStyle.copyWith(
+          fontSize: 11,
+          color: Colors.grey[700],
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Column _buildReportBodyWidget() {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildBodyText('04', width: 40),
+              _buildBodyText('0', width: 40),
+              _buildBodyText('02:25 PM', width: 55),
+              _buildBodyText('-', width: 55),
+              _buildBodyText('No Punch-Out', width: 72),
+            ],
+          ),
+        ),
+        Container(color: Colors.black12, height: 1),
+      ],
+    );
+  }
+
+  Container _buildReportHeadingWidget() {
+    return Container(
+      width: double.maxFinite,
+      height: 30,
+      color: kPrimaryColorHeavy,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildHeadingText('DATE', width: 40),
+            _buildHeadingText('DAYS', width: 40),
+            _buildHeadingText('IN', width: 55),
+            _buildHeadingText('OUT', width: 55),
+            _buildHeadingText('TYPE', width: 72),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var uiConsumer = Provider.of<AttendanceReportUIProvider>(context);
+    return AnimatedOpacity(
+      opacity: uiConsumer.isReportPopUpVisible? 1: 0,
+      duration: Duration(milliseconds: 400),
+      child: Visibility(
+        visible: uiConsumer.isReportPopUpVisible,
+        child: GestureDetector(
+          onTap: (){
+            uiConsumer.toggleReportPopUpVisible();
+          },
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.black38,
+            child: Material(
+              color: Colors.transparent,
+              child: GestureDetector(
+                onTap: (){
+                //  GestureDetector makes Popup insensitive to touch
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  height: 170,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          'Oct 2023',
+                          style: reportTextStyle,
+                        ),
+                      ),
+                      _buildReportHeadingWidget(),
+                      Expanded(
+                        child: Column(
+                          // shrinkWrap: true,
+                          children: [
+                            _buildReportBodyWidget(),
+                            _buildReportBodyWidget(),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        margin: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                        child: ClickableText(
+                          'OK',
+                          fontSize: 15,
+                          onPressed: () {
+                            uiConsumer.toggleReportPopUpVisible();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// 4.

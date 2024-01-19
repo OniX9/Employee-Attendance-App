@@ -1,4 +1,5 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/screens/employee_profile_screen.dart';
 import 'package:employee_attendance/screens/public_holidays_screen.dart';
 import 'package:employee_attendance/screens/settings_screen.dart';
 import 'package:employee_attendance/widgets/dashboard_list_item.dart';
@@ -58,10 +59,7 @@ class EmployeeDashboardScreen extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: DashBoardListView(),
-                ),
+                child: DashBoardListView(),
               ),
             )
           ],
@@ -87,7 +85,10 @@ class DashBoardListView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          DayAndDateText(),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: DayAndDateText(),
+          ),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.68,
             child: ListView(
@@ -111,7 +112,15 @@ class DashBoardListView extends StatelessWidget {
                   title: 'PROFILE',
                   description: 'display your profile details',
                   imageUrl: "assets/images/employee_dashboard/profile.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      //TODO: Make adding public holidays admin only
+                      PageTransition(
+                        EmployeeProfileScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'MARK ATTENDANCE',

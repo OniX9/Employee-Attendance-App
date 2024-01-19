@@ -3,7 +3,6 @@ import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:employee_attendance/widgets/profile_pic.dart';
 import 'package:flutter/material.dart';
-
 import 'admin_attendance_report_b_screen.dart';
 
 class AdminAttendanceReportAScreen extends StatelessWidget {

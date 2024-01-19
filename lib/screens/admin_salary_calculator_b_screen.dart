@@ -1,8 +1,10 @@
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/controller/dataProviders/calender_events.dart';
+import 'package:employee_attendance/screens/salary_amount_calculation_screen.dart';
 import 'package:employee_attendance/widgets/call_action_button.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:calendar_view/calendar_view.dart';
+import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -134,7 +136,11 @@ class CalculateAmountButton extends StatelessWidget {
             margin: EdgeInsets.zero,
             width: 270,
             label: 'CALCULATE AMOUNT',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                PageTransition(SalaryAmountCalculationScreen()),
+              );
+            },
           ),
         ],
       ),
@@ -467,7 +473,7 @@ class GetCalenderHolidayPunchInOutBox extends StatelessWidget {
       } else {
         return isInMonth && !_isAboveToday()
             ? Container(
-          alignment: Alignment.center,
+                alignment: Alignment.center,
                 padding: EdgeInsets.all(2),
                 margin: EdgeInsets.only(top: 3),
                 height: 30,

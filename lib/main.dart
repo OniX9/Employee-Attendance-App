@@ -1,6 +1,7 @@
 import 'package:employee_attendance/controller/dataProviders/calender_events.dart';
 import 'package:employee_attendance/controller/dataProviders/public_holidays.dart';
 import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
+import 'package:employee_attendance/controller/uiProviders/attendance_report_ui.dart';
 import 'package:employee_attendance/controller/uiProviders/public_holidays_ui.dart';
 import 'package:employee_attendance/screens/admin_salary_calculator_b_screen.dart';
 import 'package:employee_attendance/screens/onboarding_screen.dart';
@@ -18,6 +19,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => PublicHolidaysUIProvider()),
         ChangeNotifierProvider(create: (context) => PublicHolidaysProvider()),
         ChangeNotifierProvider(create: (context) => CalenderEventsProvider()),
+        ChangeNotifierProvider(create: (context) => AttendanceReportUIProvider(),),
       ],
       child: const MyApp(),
     ),

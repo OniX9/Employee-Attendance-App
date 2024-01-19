@@ -2,6 +2,7 @@ import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/screens/add_employee_screen.dart';
 import 'package:employee_attendance/screens/admin_attendance_report_a_screen.dart';
 import 'package:employee_attendance/screens/admin_salary_calculator_a_screen.dart';
+import 'package:employee_attendance/screens/notes_rules_screen.dart';
 import 'package:employee_attendance/screens/present_employee_screen.dart';
 import 'package:employee_attendance/screens/public_holidays_screen.dart';
 import 'package:employee_attendance/screens/settings_screen.dart';
@@ -238,7 +239,14 @@ class DashBoardListView extends StatelessWidget {
                         title: 'NOTES/RULES',
                         description:
                             'Important notes/rules which your registered employees need to take note.',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            PageTransition(
+                              NotesRulesScreen(),
+                              direction: SlideFrom.right,
+                            ),
+                          );
+                        },
                       ),
                       SizedBox(width: 20),
                     ],
@@ -274,7 +282,7 @@ class DashBoardExtraCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onPressed,
       child: CustomCard(
         margin: EdgeInsets.only(left: 10),
         width: 220,
@@ -336,4 +344,3 @@ class DashBoardExtraCard extends StatelessWidget {
     );
   }
 }
-
