@@ -19,6 +19,7 @@ class PublicHolidaysScreen extends StatelessWidget {
     var isAdmin = Provider.of<AdminUIProvider>(context).isAdmin;
     String date = ''; // TODO: MAKE DATE COMPULSORY
     String description = '';
+
     Color markerColorPicker() {
       List<Color> colors = [
         Colors.yellow,
@@ -30,14 +31,18 @@ class PublicHolidaysScreen extends StatelessWidget {
       return colors[Random().nextInt(colors.length-1)];
     }
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
+    FloatingActionButton? _buildFloatingAddHolidayButtonIfIsAdmin(){
+      return isAdmin ? FloatingActionButton(
         backgroundColor: kPrimaryColorLight,
         onPressed: () {
           uiConsumer.toggleAddHolidaysPopUp();
         },
         child: const Icon(Icons.add, size: 40),
-      ),
+      ) : null;
+    }
+
+    return Scaffold(
+      floatingActionButton: _buildFloatingAddHolidayButtonIfIsAdmin(),
       appBar: MyAppBar(context, label: 'Public Holidays'),
       body: Stack(
         children: [
@@ -206,7 +211,7 @@ class BlurBackdropPopUp extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             MaterialButton(
-                              onPressed: saveActionButton,
+                              onPressed: cancelActionButton,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12)),
                               child: Text(

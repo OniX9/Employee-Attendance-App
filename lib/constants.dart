@@ -28,7 +28,7 @@ TextStyle kCardDescriptionTextStyle = const TextStyle(
   fontSize: 11,
 );
 
-TextStyle kHeading1Textstyle = const TextStyle(
+TextStyle kHeadingTextstyle = const TextStyle(
   fontSize: 22,
   color: Colors.white,
 );

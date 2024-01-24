@@ -1,5 +1,8 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/screens/admin_attendance_report_b_screen.dart';
+import 'package:employee_attendance/screens/admin_salary_calculator_b_screen.dart';
 import 'package:employee_attendance/screens/employee_profile_screen.dart';
+import 'package:employee_attendance/screens/mark_attendance_screen.dart';
 import 'package:employee_attendance/screens/public_holidays_screen.dart';
 import 'package:employee_attendance/screens/settings_screen.dart';
 import 'package:employee_attendance/widgets/dashboard_list_item.dart';
@@ -127,21 +130,43 @@ class DashBoardListView extends StatelessWidget {
                   description: 'Mark your daily attendance',
                   imageUrl:
                       "assets/images/employee_dashboard/mark_attendance.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      //TODO: Make adding public holidays admin only
+                      PageTransition(
+                        MarkAttendanceScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'VIEW ATTENDANCE',
                   description: 'Check your monthly attendance in detailing',
                   imageUrl:
                       "assets/images/employee_dashboard/view_attendance.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        AdminSalaryCalculatorBScreen('Ola James'),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'REPORT',
                   description:
                       'Check your month wie attendance reports in Chart format',
                   imageUrl: "assets/images/employee_dashboard/report.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        AdminAttendanceReportBScreen('Ola James'),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
                 DashBoardListItem(
                   title: 'CHANGE PASSWORD',

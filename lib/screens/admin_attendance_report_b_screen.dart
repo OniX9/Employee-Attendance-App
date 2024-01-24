@@ -1,5 +1,6 @@
 import 'package:draggable_bottom_sheet/draggable_bottom_sheet.dart';
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
 import 'package:employee_attendance/controller/uiProviders/attendance_report_ui.dart';
 import 'package:employee_attendance/services/brain.dart';
 import 'package:employee_attendance/widgets/call_action_button.dart';
@@ -18,6 +19,7 @@ class AdminAttendanceReportBScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var reportUIConsumer = Provider.of<AttendanceReportUIProvider>(context);
+    var adminUIConsumer = Provider.of<AdminUIProvider>(context);
     final double bottomSheetMinExtent = 150;
     Widget _backgroundWidget() {
       return Scaffold(

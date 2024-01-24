@@ -1,5 +1,7 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/screens/admin_employee_attendance_location_screen.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
+import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:employee_attendance/widgets/profile_pic.dart';
 import 'package:flutter/material.dart';
 
@@ -48,53 +50,61 @@ class LiveTrackEmployeeContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 80,
-      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 7),
-      decoration: kDividerBoxDecoration,
-      child: Row(
-        children: [
-          ProfilePicture(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                name,
-                style: kCardTitleTextStyle.copyWith(
-                  fontSize: 16,
-                  color: Colors.blueAccent[700],
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          PageTransition(AdminEmployeeAttendanceLocationScreen(name),
+              direction: SlideFrom.right),
+        );
+      },
+      child: Container(
+        height: 80,
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 7),
+        decoration: kDividerBoxDecoration,
+        child: Row(
+          children: [
+            ProfilePicture(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: kCardTitleTextStyle.copyWith(
+                    fontSize: 16,
+                    color: Colors.blueAccent[700],
+                  ),
                 ),
-              ),
-              SizedBox(height: 12),
-              Text(
-                '+$mobileNo',
-                style: kCardTitleTextStyle.copyWith(
-                  fontSize: 16,
+                SizedBox(height: 12),
+                Text(
+                  '+$mobileNo',
+                  style: kCardTitleTextStyle.copyWith(
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Expanded(child: SizedBox()),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              LiveTrackingSwitch(),
-              Text(
-                'Start',
-                style: kCardTitleTextStyle.copyWith(
-                  fontSize: 16,
+              ],
+            ),
+            Expanded(child: SizedBox()),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                LiveTrackingSwitch(),
+                Text(
+                  'Start',
+                  style: kCardTitleTextStyle.copyWith(
+                    fontSize: 16,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child:
-                Icon(Icons.arrow_forward_ios, color: Colors.black87, size: 16),
-          ),
-        ],
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Icon(Icons.arrow_forward_ios,
+                  color: Colors.black87, size: 16),
+            ),
+          ],
+        ),
       ),
     );
   }

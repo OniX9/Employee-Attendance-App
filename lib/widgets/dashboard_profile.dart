@@ -35,7 +35,7 @@ class DashboardProfile extends StatelessWidget {
               SizedBox(height: 5),
               Text(
                 'OLA JAMES',
-                style: kHeading1Textstyle,
+                style: kHeadingTextstyle,
               ),
             ],
           )

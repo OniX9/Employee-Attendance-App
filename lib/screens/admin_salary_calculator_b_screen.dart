@@ -1,7 +1,10 @@
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/controller/dataProviders/calender_events.dart';
+import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
+import 'package:employee_attendance/controller/uiProviders/salary_calculator_ui.dart';
 import 'package:employee_attendance/screens/salary_amount_calculation_screen.dart';
 import 'package:employee_attendance/widgets/call_action_button.dart';
+import 'package:employee_attendance/widgets/clickable_text.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
@@ -14,51 +17,74 @@ class AdminSalaryCalculatorBScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBlueScaffoldColor,
-      appBar: MyAppBar(
-        context,
-        label: workerID,
-        trailing: Row(
-          children: [
-            IconButton(icon: Icon(Icons.info, size: 30), onPressed: () {}),
-            IconButton(
-                icon: Icon(Icons.share_outlined, size: 30), onPressed: () {}),
-            PopupMenuButton(
-              padding: EdgeInsets.zero,
-              icon: Transform.scale(
-                scaleY: 1.2,
-                child: Icon(Icons.more_vert_rounded, size: 35),
-              ),
-              itemBuilder: (context) {
-                return const [
-                  PopupMenuItem(
-                    child: Text(
-                      "Show Attendance In List Format",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    value: '/list',
+    var uiConsumer = Provider.of<SalaryCalculatorUIProvider>(context);
+    bool isAdmin = Provider.of<AdminUIProvider>(context).isAdmin;
+
+    Widget enableCalculateAmountButtonIfIsAdmin() {
+      return isAdmin
+          ? CalculateAmountButton()
+          : Container( // Divider
+              width: double.maxFinite,
+              height: 2,
+              color: Colors.black12,
+              margin: EdgeInsets.only(bottom: 20),
+            );
+    }
+
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: kBlueScaffoldColor,
+          appBar: MyAppBar(
+            context,
+            label: workerID,
+            trailing: Row(
+              children: [
+                IconButton(icon: Icon(Icons.info, size: 30), onPressed: () {}),
+                IconButton(
+                    icon: Icon(Icons.share_outlined, size: 30),
+                    onPressed: () {}),
+                PopupMenuButton(
+                  padding: EdgeInsets.zero,
+                  icon: Transform.scale(
+                    scaleY: 1.2,
+                    child: Icon(Icons.more_vert_rounded, size: 35),
                   ),
-                  PopupMenuItem(
-                    child: Text(
-                      "Show Attendance Position On Map",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    value: '/Map',
-                  ),
-                ];
-              },
+                  itemBuilder: (context) {
+                    return [
+                      PopupMenuItem(
+                        onTap: () {
+                          uiConsumer.toggleReportPopUpVisible();
+                        },
+                        child: Text(
+                          "Show Attendance In List Format",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        value: '/showList',
+                      ),
+                      PopupMenuItem(
+                        child: Text(
+                          "Show Attendance Position On Map",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        value: '/showMap',
+                      ),
+                    ];
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
+          body: Column(
+            children: [
+              CalenderContainer(),
+              enableCalculateAmountButtonIfIsAdmin(),
+              MonthlyAttendanceSummaryContainer(),
+            ],
+          ),
         ),
-      ),
-      body: Column(
-        children: [
-          CalenderContainer(),
-          CalculateAmountButton(),
-          MonthlyAttendanceSummaryContainer(),
-        ],
-      ),
+        PopUpAttendanceList(),
+      ],
     );
   }
 }
@@ -491,4 +517,340 @@ class GetCalenderHolidayPunchInOutBox extends StatelessWidget {
       }
     }
   }
+}
+
+//..
+
+class PopUpAttendanceList extends StatelessWidget {
+  const PopUpAttendanceList({
+    super.key,
+  });
+
+  final TextStyle reportTextStyle = const TextStyle(
+    color: Color(0xB60B4DA5),
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
+
+  SizedBox _buildHeadingText(String text,
+      {Color? color = Colors.white, double? width}) {
+    return SizedBox(
+      width: width,
+      child: Text(text,
+          textAlign: TextAlign.center,
+          style: reportTextStyle.copyWith(
+            color: color,
+          )),
+    );
+  }
+
+  SizedBox _buildBodyText(
+    String text, {
+    double? width,
+    Color? color = const Color(0xFF616161),
+  }) {
+    return SizedBox(
+      width: width,
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: reportTextStyle.copyWith(
+          fontSize: 11,
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Column _buildReportBodyWidget({
+    required int date,
+    AttendanceType type = AttendanceType.absentDay,
+    String? punchIn,
+    String? punchOut,
+  }) {
+    Color? _getColor() {
+      switch (type) {
+        case AttendanceType.presentButAbsent:
+          return Colors.yellow[600];
+        case AttendanceType.noPunchOut:
+          return Colors.green;
+        case AttendanceType.absentDay:
+          return Colors.red;
+        default:
+          return Colors.red;
+      }
+    }
+
+    String _getTypeString() {
+      switch (type) {
+        case AttendanceType.presentButAbsent:
+          return 'Present But Abs...';
+        case AttendanceType.noPunchOut:
+          return 'No Punch-Out';
+        case AttendanceType.absentDay:
+          return 'Absent Day';
+        default:
+          return 'Absent Day';
+      }
+    }
+
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildBodyText(
+                date.toString().padLeft(2, '0'),
+                color: _getColor(),
+                width: 40,
+              ),
+              _buildBodyText('0', width: 40),
+              _buildBodyText(punchIn ?? '-', width: 55),
+              _buildBodyText(punchOut ?? '-', width: 55),
+              _buildBodyText(_getTypeString(), width: 72),
+            ],
+          ),
+        ),
+        Container(color: Colors.black12, height: 1),
+      ],
+    );
+  }
+
+  Container _buildReportHeadingWidget() {
+    return Container(
+      width: double.maxFinite,
+      height: 30,
+      color: kPrimaryColorHeavy,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildHeadingText('DATE', width: 40),
+            _buildHeadingText('DAYS', width: 40),
+            _buildHeadingText('IN', width: 55),
+            _buildHeadingText('OUT', width: 55),
+            _buildHeadingText('TYPE', width: 72),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var uiConsumer = Provider.of<SalaryCalculatorUIProvider>(context);
+    return AnimatedOpacity(
+      opacity: uiConsumer.isReportPopUpVisible ? 1 : 0,
+      duration: Duration(milliseconds: 400),
+      child: Visibility(
+        visible: uiConsumer.isReportPopUpVisible,
+        child: GestureDetector(
+          onTap: () {
+            uiConsumer.toggleReportPopUpVisible();
+          },
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.black38,
+            child: Material(
+              color: Colors.transparent,
+              child: GestureDetector(
+                onTap: () {
+                  //  GestureDetector makes Popup insensitive to touch
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  height: MediaQuery.of(context).size.height * 0.85,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Text(
+                          'Oct 2023',
+                          style: reportTextStyle,
+                        ),
+                      ),
+                      _buildReportHeadingWidget(),
+                      Expanded(
+                        child: ListView(
+                          physics: BouncingScrollPhysics(),
+                          children: [
+                            _buildReportBodyWidget(
+                              date: 1,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 2,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 3,
+                              type: AttendanceType.presentButAbsent,
+                              punchIn: '08:09 AM',
+                              punchOut: '11:06 AM',
+                            ),
+                            _buildReportBodyWidget(
+                              date: 4,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 5,
+                              type: AttendanceType.presentButAbsent,
+                              punchIn: '11:09 AM',
+                              punchOut: '02:06 PM',
+                            ),
+                            _buildReportBodyWidget(
+                              date: 6,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 7,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 8,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 9,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 10,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 11,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 12,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 13,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 14,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 15,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 16,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 17,
+                              type: AttendanceType.noPunchOut,
+                              punchIn: '12:26 PM',
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 18,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 19,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 20,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 21,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 22,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                            _buildReportBodyWidget(
+                              date: 23,
+                              type: AttendanceType.absentDay,
+                              punchIn: null,
+                              punchOut: null,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: ClickableText(
+                          'OK',
+                          fontSize: 15,
+                          onPressed: () {
+                            uiConsumer.toggleReportPopUpVisible();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+enum AttendanceType {
+  presentButAbsent,
+  absentDay,
+  noPunchOut,
 }
