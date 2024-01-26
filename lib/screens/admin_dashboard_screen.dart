@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:employee_attendance/constants.dart';
-import 'package:employee_attendance/screens/add_employee_screen.dart';
+import 'package:employee_attendance/screens/admin_add_employee_screen.dart';
 import 'package:employee_attendance/screens/admin_attendance_report_a_screen.dart';
 import 'package:employee_attendance/screens/admin_salary_calculator_a_screen.dart';
 import 'package:employee_attendance/screens/notes_rules_screen.dart';
@@ -15,6 +15,7 @@ import 'package:employee_attendance/widgets/day_and_date_text.dart';
 import 'package:employee_attendance/widgets/menu_button.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:employee_attendance/widgets/dashboard_list_item.dart';
+import 'package:employee_attendance/widgets/password_change_popup.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,7 @@ class AdminDashboardScreen extends StatelessWidget {
               ),
             ),
           ),
-          BlurBackdropPopUp(
+          BroadcastBackdropPopUp(
               popUp: uiConsumer.isBroadCastPopUpVisible,
               titleOnChanged: (newTitle){},
               descriptionOnChanged: (String newMessage){
@@ -89,7 +90,19 @@ class AdminDashboardScreen extends StatelessWidget {
               },
               cancelActionButton: (){
                 uiConsumer.toggleBroadCastPopUp();
-              }),
+              },
+          ),
+          PasswordChangePopUp(
+            popUp: uiConsumer.isAChangePasswordPopUpVisible,
+            passwordOnChanged: (newPassword){
+            },
+            saveActionButton: (){
+              uiConsumer.toggleAChangePasswordPopUp();
+            },
+            cancelActionButton: (){
+              uiConsumer.toggleAChangePasswordPopUp();
+            },
+          ),
         ],
       ),
     );
@@ -142,7 +155,7 @@ class DashBoardListView extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).push(
                       PageTransition(
-                        AddEmployeeScreen(),
+                        AdminAddEmployeeScreen(),
                         direction: SlideFrom.right,
                       ),
                     );
@@ -225,7 +238,9 @@ class DashBoardListView extends StatelessWidget {
                   description: 'Allow to change your password',
                   imageUrl:
                       "assets/images/employee_dashboard/change_password.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    uiConsumer.toggleAChangePasswordPopUp();
+                  },
                 ),
                 Container(
                   padding:
@@ -365,14 +380,14 @@ class DashBoardExtraCard extends StatelessWidget {
 }
 
 // 3.
-class BlurBackdropPopUp extends StatelessWidget {
+class BroadcastBackdropPopUp extends StatelessWidget {
   final bool popUp;
   final void Function(String)? titleOnChanged;
   final void Function(String)? descriptionOnChanged;
   final void Function()? saveActionButton;
   final void Function()? cancelActionButton;
 
-  const BlurBackdropPopUp({
+  const BroadcastBackdropPopUp({
     super.key,
     required this.popUp,
     required this.titleOnChanged,
@@ -430,25 +445,16 @@ class BlurBackdropPopUp extends StatelessWidget {
                         SizedBox(
                           height: 40,
                           child: TextField(
-                            decoration: InputDecoration(
-                              filled: true,
-                                fillColor: Colors.grey[200],
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                hintText: 'Enter Title'),
+                            decoration:  kPopUpInputDecoration.copyWith(
+                              hintText: 'Enter Title',
+                            ),
                             onChanged: titleOnChanged,
                           ),
                         ),
                         SizedBox(height: 10),
                         TextField(
                           maxLines: 3,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[200],
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                            ),
+                          decoration: kPopUpInputDecoration.copyWith(
                             hintText: 'Enter Description',
                           ),
                           onChanged: descriptionOnChanged,

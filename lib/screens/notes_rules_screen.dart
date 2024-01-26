@@ -1,10 +1,8 @@
 import 'dart:ui';
 import 'dart:math';
 import 'package:employee_attendance/constants.dart';
-import 'package:employee_attendance/controller/dataProviders/public_holidays.dart';
 import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
-import 'package:employee_attendance/controller/uiProviders/public_holidays_ui.dart';
-import 'package:employee_attendance/models/public_holiday.dart';
+import 'package:employee_attendance/controller/uiProviders/notes_rules_ui.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +12,7 @@ class NotesRulesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var uiConsumer = Provider.of<PublicHolidaysUIProvider>(context);
-    var dataConsumer = Provider.of<PublicHolidaysProvider>(context);
+    var uiConsumer = Provider.of<NotesRulesUIProvider>(context);
     var isAdmin = Provider.of<AdminUIProvider>(context).isAdmin;
     String date = ''; // TODO: MAKE DATE COMPULSORY
     String description = '';
@@ -31,14 +28,18 @@ class NotesRulesScreen extends StatelessWidget {
       return colors[Random().nextInt(colors.length-1)];
     }
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
+    FloatingActionButton? _buildFloatingAddNoteRuttonIfIsAdmin(){
+      return isAdmin ? FloatingActionButton(
         backgroundColor: kPrimaryColorLight,
         onPressed: () {
-          uiConsumer.toggleAddHolidaysPopUp();
+          uiConsumer.toggleAddNotesRulesPopUp();
         },
         child: const Icon(Icons.add, size: 40),
-      ),
+      ) : null;
+    }
+
+    return Scaffold(
+      floatingActionButton: _buildFloatingAddNoteRuttonIfIsAdmin(),
       appBar: MyAppBar(context, label: 'Notes / Rules'),
       body: Stack(
         children: [
@@ -60,7 +61,7 @@ class NotesRulesScreen extends StatelessWidget {
             ],
           ),
           BlurBackdropPopUp(
-              popUp: uiConsumer.isAddHolidaysPopUpVisible,
+              popUp: uiConsumer.isAddNotesRulesPopUpVisible,
               titleOnChanged: (String newDate) {
                 date = newDate;
               },
@@ -68,13 +69,13 @@ class NotesRulesScreen extends StatelessWidget {
                 description = newDesc;
               },
               saveActionButton: () {
-                uiConsumer.toggleAddHolidaysPopUp();
+                uiConsumer.toggleAddNotesRulesPopUp();
                 // dataConsumer.addPublicHolidays(
                 //   PublicHoliday(date: date, description: description),
                 // );
               },
               cancelActionButton: () {
-                uiConsumer.toggleAddHolidaysPopUp();
+                uiConsumer.toggleAddNotesRulesPopUp();
               }),
         ],
       ),
@@ -217,16 +218,16 @@ class BlurBackdropPopUp extends StatelessWidget {
                         SizedBox(
                           height: 40,
                           child: TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(), hintText: 'Enter Title'),
+                            decoration:  kPopUpInputDecoration.copyWith(
+                              hintText: 'Enter Title',
+                            ),
                             onChanged: titleOnChanged,
                           ),
                         ),
                         SizedBox(height: 5),
                         TextField(
                           maxLines: 3,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
+                          decoration: kPopUpInputDecoration.copyWith(
                             hintText: 'Enter Description',
                           ),
                           onChanged: descriptionOnChanged,

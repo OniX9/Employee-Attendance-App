@@ -193,16 +193,16 @@ class BlurBackdropPopUp extends StatelessWidget {
                         SizedBox(
                           height: 40,
                           child: TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(), hintText: 'date'),
+                            decoration:  kPopUpInputDecoration.copyWith(
+                              hintText: 'Date',
+                            ),
                             onChanged: dateOnChanged,
                           ),
                         ),
                         SizedBox(height: 5),
                         TextField(
                           maxLines: 3,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
+                          decoration: kPopUpInputDecoration.copyWith(
                             hintText: 'Enter Description',
                           ),
                           onChanged: descriptionOnChanged,

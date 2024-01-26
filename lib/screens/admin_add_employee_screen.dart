@@ -6,8 +6,8 @@ import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:employee_attendance/widgets/phone_no_textfield.dart';
 import 'package:flutter/material.dart';
 
-class AddEmployeeScreen extends StatelessWidget {
-  const AddEmployeeScreen({super.key});
+class AdminAddEmployeeScreen extends StatelessWidget {
+  const AdminAddEmployeeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -429,20 +429,3 @@ class LabeledCheckCircle extends StatelessWidget {
     );
   }
 }
-
-// ADD EMPLOYEE TIME SLOT BUTTONS.
-// GestureDetector(
-// onTap: () {},
-// child: Container(
-// width: 50,
-// height: 30,
-// alignment: Alignment.center,
-// decoration: BoxDecoration(
-// color: kPrimaryColorLight,
-// borderRadius: BorderRadius.circular(3),
-// ),
-// child: Text(day,
-// style: TextStyle(color: Colors.grey[200]),
-// ),
-// ),
-// ),

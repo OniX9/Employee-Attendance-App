@@ -1,9 +1,7 @@
 import 'package:employee_attendance/constants.dart';
-import 'package:employee_attendance/widgets/auth_text_field.dart';
 import 'package:employee_attendance/widgets/blue_tag_container.dart';
 import 'package:employee_attendance/widgets/labeled_check_box.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
-import 'package:employee_attendance/widgets/phone_no_textfield.dart';
 import 'package:flutter/material.dart';
 
 class EmployeeProfileScreen extends StatelessWidget {
@@ -37,6 +35,100 @@ class EmployeeProfileScreen extends StatelessWidget {
     );
   }
 }
+
+// **CUSTOM WIDGETS**
+// 1.
+class EmployeeInformationContainer extends StatelessWidget {
+  const EmployeeInformationContainer({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlueTagContainer(
+      title: 'Employee information',
+      showProfilePic: true,
+      height: null,
+      child: Padding(
+        padding: const EdgeInsets.all(13.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            EmployeeDetailsTextField(
+              title: 'Employee Name',
+              details: 'Ola James',
+            ),
+            EmployeeDetailsTextField(
+              title: 'Employee Address',
+              details: '123, street, city, state',
+            ),
+            EmployeeDetailsTextField(
+              title: 'Date Of Birth',
+              details: '15 JAN 1990',
+            ),
+            EmployeeDetailsTextField(
+              title: 'Mobile No',
+              details: '1234567890',
+            ),
+            EmployeeDetailsTextField(
+              title: 'Email Id',
+              details: 'olajames@example.com',
+            ),
+            EmployeeDetailsTextField(
+              title: 'Password',
+              details: '!james123#',
+            ),
+            EmployeeDetailsTextField(
+              title: 'Designation ( Exe, Employee, Manager',
+              details: 'Employee',
+            ),
+            EmployeeDetailsTextField(
+              title: 'Currency Symbo',
+              details: '₦',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EmployeeDetailsTextField extends StatelessWidget {
+  final String title;
+  final String details;
+  const EmployeeDetailsTextField({
+    required this.title,
+    required this.details,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: kCardDescriptionTextStyle),
+          SizedBox(height: 8),
+          SelectableText(details,
+              style: kAuthTextStyle.copyWith(
+                color: Colors.grey[700],
+                fontWeight: FontWeight.w500,
+              )),
+          SizedBox(height: 3),
+          Container(
+            //Divider
+            width: double.maxFinite,
+            height: 1,
+            color: Colors.black,
+          )
+        ],
+      ),
+    );
+  }
+}
+
 
 // 2.
 class TimeSlotsContainer extends StatelessWidget {
@@ -198,12 +290,12 @@ class BlueWeekDayButton extends StatelessWidget {
         margin: EdgeInsets.only(right: 20, top: 5),
         decoration: value
             ? BoxDecoration(
-                color: kPrimaryColorLight,
-                borderRadius: BorderRadius.circular(3),
-              )
+          color: kPrimaryColorLight,
+          borderRadius: BorderRadius.circular(3),
+        )
             : BoxDecoration(
-                borderRadius: BorderRadius.circular(3),
-                border: Border.all(width: 2, color: Colors.black12)),
+            borderRadius: BorderRadius.circular(3),
+            border: Border.all(width: 2, color: Colors.black12)),
         child: Text(
           day,
           style: TextStyle(color: value ? Colors.grey[200] : Colors.black87),
@@ -218,10 +310,10 @@ class TimeSlotsTableHeading extends StatelessWidget {
   final double? width;
 
   const TimeSlotsTableHeading(
-    this.text, {
-    this.width = 50,
-    super.key,
-  });
+      this.text, {
+        this.width = 50,
+        super.key,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +346,7 @@ class PaymentInfoContainer extends StatelessWidget {
         child: Column(
           children: [
             PaymentTypeTexts(),
-            AmountLabelTextField(
+            AmountLabel(
               //TODO: MAKE IS MONTHLY TRUE OR FALSE,
               isMonthly: true,
             ),
@@ -288,10 +380,10 @@ class PaymentTypeTexts extends StatelessWidget {
   }
 }
 
-class AmountLabelTextField extends StatelessWidget {
+class AmountLabel extends StatelessWidget {
   final bool isMonthly;
 
-  const AmountLabelTextField({
+  const AmountLabel({
     required this.isMonthly,
     super.key,
   });
@@ -321,99 +413,6 @@ class AmountLabelTextField extends StatelessWidget {
           ],
         )
       ],
-    );
-  }
-}
-
-// **CUSTOM WIDGETS**
-// 1.
-class EmployeeInformationContainer extends StatelessWidget {
-  const EmployeeInformationContainer({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlueTagContainer(
-      title: 'Employee information',
-      showProfilePic: true,
-      height: null,
-      child: Padding(
-        padding: const EdgeInsets.all(13.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            EmployeeDetailsTextField(
-              title: 'Employee Name',
-              details: 'Ola James',
-            ),
-            EmployeeDetailsTextField(
-              title: 'Employee Address',
-              details: '123, street, city, state',
-            ),
-            EmployeeDetailsTextField(
-              title: 'Date Of Birth',
-              details: '15 JAN 1990',
-            ),
-            EmployeeDetailsTextField(
-              title: 'Mobile No',
-              details: '1234567890',
-            ),
-            EmployeeDetailsTextField(
-              title: 'Email Id',
-              details: 'olajames@example.com',
-            ),
-            EmployeeDetailsTextField(
-              title: 'Password',
-              details: '!james123#',
-            ),
-            EmployeeDetailsTextField(
-              title: 'Designation ( Exe, Employee, Manager',
-              details: 'Employee',
-            ),
-            EmployeeDetailsTextField(
-              title: 'Currency Symbo',
-              details: '₦',
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class EmployeeDetailsTextField extends StatelessWidget {
-  final String title;
-  final String details;
-  const EmployeeDetailsTextField({
-    required this.title,
-    required this.details,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: kCardDescriptionTextStyle),
-          SizedBox(height: 8),
-          SelectableText(details,
-              style: kAuthTextStyle.copyWith(
-                color: Colors.grey[700],
-                fontWeight: FontWeight.w500,
-              )),
-          SizedBox(height: 3),
-          Container(
-            //Divider
-            width: double.maxFinite,
-            height: 1,
-            color: Colors.black,
-          )
-        ],
-      ),
     );
   }
 }

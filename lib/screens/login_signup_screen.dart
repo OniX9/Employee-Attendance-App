@@ -70,9 +70,13 @@ class LoginSignUpScreen extends StatelessWidget {
                                               top: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.015),
-                                          child: Image.asset(
-                                              'assets/images/login/acount_verification_logo.png'),
+                                                  0.0152),
+                                          child: CircleAvatar(
+                                            backgroundColor: Colors.white,
+                                            radius: 40,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/login/acount_verification_logo.png'),
+                                          ),
                                         ),
                                         const Text(
                                           'Welcome',

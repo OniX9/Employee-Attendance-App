@@ -1,8 +1,10 @@
+import 'dart:ui';
 import 'package:employee_attendance/constants.dart';
 import 'package:employee_attendance/screens/admin_attendance_report_b_screen.dart';
 import 'package:employee_attendance/screens/admin_salary_calculator_b_screen.dart';
 import 'package:employee_attendance/screens/employee_profile_screen.dart';
 import 'package:employee_attendance/screens/mark_attendance_screen.dart';
+import 'package:employee_attendance/screens/notes_rules_screen.dart';
 import 'package:employee_attendance/screens/public_holidays_screen.dart';
 import 'package:employee_attendance/screens/settings_screen.dart';
 import 'package:employee_attendance/widgets/dashboard_list_item.dart';
@@ -10,6 +12,7 @@ import 'package:employee_attendance/widgets/dashboard_profile.dart';
 import 'package:employee_attendance/widgets/day_and_date_text.dart';
 import 'package:employee_attendance/widgets/menu_button.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
+import 'package:employee_attendance/widgets/password_change_popup.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../controller/uiProviders/admin_ui.dart';
@@ -20,53 +23,71 @@ class EmployeeDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var uiConsumer = Provider.of<AdminUIProvider>(context);
-
     return Scaffold(
       backgroundColor: kBlueScaffoldColor,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.375,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage('assets/images/login/background.png'),
-                fit: BoxFit.fill,
-              )),
-              child: SafeArea(
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: MenuButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            PageTransition(
-                              direction: SlideFrom.right,
-                              SettingScreen(),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.375,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/login/background.png'),
+                          fit: BoxFit.fill,
+                        )),
+                    child: SafeArea(
+                      child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: MenuButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  PageTransition(
+                                    direction: SlideFrom.right,
+                                    SettingScreen(),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: DashboardProfile(),
+                          ),
+                        ],
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: DashboardProfile(),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SafeArea(
+                      child: DashBoardListView(),
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SafeArea(
-                child: DashBoardListView(),
-              ),
-            )
-          ],
-        ),
+          ),
+          PasswordChangePopUp(
+            popUp: uiConsumer.isEChangePasswordPopUpVisible,
+            passwordOnChanged: (newPassword){
+
+            },
+            saveActionButton: (){
+              uiConsumer.toggleEChangePasswordPopUp();
+            },
+            cancelActionButton: (){
+              uiConsumer.toggleEChangePasswordPopUp();
+            },
+          ),
+        ],
       ),
     );
   }
@@ -81,6 +102,7 @@ class DashBoardListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var uiConsumer = Provider.of<AdminUIProvider>(context);
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.72,
@@ -117,7 +139,6 @@ class DashBoardListView extends StatelessWidget {
                   imageUrl: "assets/images/employee_dashboard/profile.png",
                   onPressed: () {
                     Navigator.of(context).push(
-                      //TODO: Make adding public holidays admin only
                       PageTransition(
                         EmployeeProfileScreen(),
                         direction: SlideFrom.right,
@@ -132,7 +153,6 @@ class DashBoardListView extends StatelessWidget {
                       "assets/images/employee_dashboard/mark_attendance.png",
                   onPressed: () {
                     Navigator.of(context).push(
-                      //TODO: Make adding public holidays admin only
                       PageTransition(
                         MarkAttendanceScreen(),
                         direction: SlideFrom.right,
@@ -173,14 +193,25 @@ class DashBoardListView extends StatelessWidget {
                   description: 'Allow to change your password',
                   imageUrl:
                       "assets/images/employee_dashboard/change_password.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    uiConsumer.toggleEChangePasswordPopUp();
+                    print('isEChangePasswordPopUpVisible');
+                    print(uiConsumer.isEChangePasswordPopUpVisible);
+                  },
                 ),
                 DashBoardListItem(
                   title: 'NOTES/RULES',
                   description:
                       'Important notes/rules which you need to take note.',
                   imageUrl: "assets/images/employee_dashboard/notes.png",
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      PageTransition(
+                        NotesRulesScreen(),
+                        direction: SlideFrom.right,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -190,3 +221,5 @@ class DashBoardListView extends StatelessWidget {
     );
   }
 }
+
+

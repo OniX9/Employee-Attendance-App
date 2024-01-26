@@ -32,4 +32,26 @@ class AdminUIProvider with ChangeNotifier {
     print('isBroadCastPopUpVisible: $_isBroadCastPopUpVisible');
     notifyListeners();
   }
+
+  // Admin ChangePassword PopUp
+  bool _isAChangePasswordPopUpVisible = false;
+
+  bool get isAChangePasswordPopUpVisible => _isAChangePasswordPopUpVisible;
+
+  void toggleAChangePasswordPopUp() {
+    _isAChangePasswordPopUpVisible = !_isAChangePasswordPopUpVisible;
+    print('isChangePasswordPopUpVisible: $_isAChangePasswordPopUpVisible');
+    notifyListeners();
+  }
+
+  // Employee ChangePassword PopUp
+  bool _isEChangePasswordPopUpVisible = false;
+
+  bool get isEChangePasswordPopUpVisible => _isEChangePasswordPopUpVisible;
+
+  void toggleEChangePasswordPopUp() {
+    _isEChangePasswordPopUpVisible = !_isEChangePasswordPopUpVisible;
+    print('isEChangePasswordPopUpVisible: $_isEChangePasswordPopUpVisible');
+    notifyListeners();
+  }
 }

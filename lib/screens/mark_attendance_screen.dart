@@ -30,6 +30,7 @@ class MarkAttendanceScreen extends StatelessWidget {
                 child: GoogleMapWidget(
                   compassEnabled: true,
                   myLocationButtonEnabled: true,
+                  currentLocation: CurrentLocation(lat: 4.8472226, long: 6.974604),
                 ),
               ),
               BottomTimeLocationContainer(

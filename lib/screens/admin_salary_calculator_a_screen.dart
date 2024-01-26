@@ -66,20 +66,23 @@ class SelectEmployeeContainer extends StatelessWidget {
         );
       },
       child: Container(
-        height: 80,
+        height: 73,
         padding: EdgeInsets.symmetric(horizontal: 0, vertical: 7),
         decoration: kDividerBoxDecoration,
-        child: Row(
+        child:  Row(
           children: [
-            ProfilePicture(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ProfilePicture(radius: 25),
+            ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   name,
                   style: kCardTitleTextStyle.copyWith(
-                    fontSize: 16,
+                    fontSize: 14,
                     color: Colors.blueAccent[700],
                   ),
                 ),
@@ -87,19 +90,21 @@ class SelectEmployeeContainer extends StatelessWidget {
                 Text(
                   '+$mobileNo',
                   style: kCardTitleTextStyle.copyWith(
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
               ],
             ),
             Expanded(child: SizedBox()),
-            SizedBox(
-              width: 120,
-              child: Text(
-                designation,
-                textAlign: TextAlign.right,
-                style: kCardDescriptionTextStyle.copyWith(
-                  fontSize: 12,
+            Flexible(
+              child: SizedBox(
+                width: 120,
+                child: Text(
+                  designation,
+                  textAlign: TextAlign.right,
+                  style: kCardDescriptionTextStyle.copyWith(
+                    fontSize: 10,
+                  ),
                 ),
               ),
             ),

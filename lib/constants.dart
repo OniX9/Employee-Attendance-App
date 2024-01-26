@@ -57,9 +57,8 @@ TextStyle kCalenderTextStyle = TextStyle(
   color: Colors.black,
 );
 
-BoxDecoration kDividerBoxDecoration = const BoxDecoration(
-  border: Border.symmetric(
-    horizontal: BorderSide(color: Colors.black38, width: 0.5),
+BoxDecoration kDividerBoxDecoration =  BoxDecoration(
+  border: Border.fromBorderSide( BorderSide(color: Colors.black38, width: 0.5),
   ),
 );
 
@@ -72,5 +71,18 @@ InputDecoration kAuthInputDecoration = const InputDecoration(
   labelStyle: TextStyle(
     color: Colors.grey,
     fontSize: 14,
+  ),
+);
+
+InputDecoration kPopUpInputDecoration = const InputDecoration(
+  filled: true,
+  fillColor: Color(0xFFEEEEEE),
+  border: OutlineInputBorder(
+    borderSide: BorderSide.none,
+  ),
+  hintStyle: TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: Colors.black26,
   ),
 );
