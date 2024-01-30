@@ -1,6 +1,8 @@
+import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/models/directions.dart';
+import 'package:employee_attendance/services/map_directions.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 class GoogleMapWidget extends StatefulWidget {
   final bool compassEnabled;
@@ -23,15 +25,16 @@ class GoogleMapWidget extends StatefulWidget {
 
 class _GoogleMapWidgetState extends State<GoogleMapWidget> {
   late GoogleMapController mapController;
-  Marker? punchInMarker;
-  Marker? punchOutMarker;
-  Marker? currentLocationMarker;
+  Marker? _punchInMarker;
+  Marker? _punchOutMarker;
+  Marker? _currentLocationMarker;
+  Directions? _dirInfo;
 
-  _addCurrentLocationMarker(CurrentLocation currentLoc) {
+  _addCurrentLocationMarker(CurrentLocation currentLoc) async {
     setState(() {
       LatLng pos = LatLng(currentLoc.lat, currentLoc.long);
-      currentLocationMarker = null;
-      currentLocationMarker = Marker(
+      _currentLocationMarker = null;
+      _currentLocationMarker = Marker(
         markerId: const MarkerId('currentLoc'),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
         position: pos,
@@ -39,13 +42,13 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
     });
   }
 
-  _addPunchMarker(LatLng pos) {
-    if (punchInMarker == null ||
-        (punchInMarker != null && punchOutMarker != null)) {
+  _addPunchMarker(LatLng pos) async {
+    if (_punchInMarker == null ||
+        (_punchInMarker != null && _punchOutMarker != null)) {
       // Checks if punchIn marker is not set, or
       // if both punchIn & punchOut markers are already set.
       setState(() {
-        punchInMarker = Marker(
+        _punchInMarker = Marker(
           markerId: const MarkerId('punchIn'),
           infoWindow: const InfoWindow(
             title: 'Punch In',
@@ -54,12 +57,13 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
           position: pos,
         );
-        punchOutMarker = null;
+        _punchOutMarker = null;
+        _dirInfo = null;
       });
     } else {
       // PunchIn is already set
       setState(() {
-        punchOutMarker = Marker(
+        _punchOutMarker = Marker(
           markerId: const MarkerId('punchOut'),
           infoWindow: const InfoWindow(
             title: 'Punch Out',
@@ -69,6 +73,12 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
           position: pos,
         );
       });
+      final directions = await MapDirections(
+        origin: pos,
+        destination: _punchInMarker!.position,
+      ).getDirections();
+      setState(() => _dirInfo = directions);
+      CameraUpdate.newLatLngBounds(_dirInfo!.bounds, 100.0);
     }
   }
 
@@ -89,9 +99,19 @@ class _GoogleMapWidgetState extends State<GoogleMapWidget> {
       compassEnabled: widget.compassEnabled,
       initialCameraPosition: MyLocation,
       markers: {
-        if (punchInMarker != null) punchInMarker!,
-        if (punchOutMarker != null) punchOutMarker!,
-        if (currentLocationMarker != null) currentLocationMarker!,
+        if (_punchInMarker != null) _punchInMarker!,
+        if (_punchOutMarker != null) _punchOutMarker!,
+        if (_currentLocationMarker != null) _currentLocationMarker!,
+      },
+      polylines: {
+        if (_dirInfo != null)
+          Polyline(
+              polylineId: PolylineId('overview_polyline'),
+            color: kPrimaryColorLight,
+            points: _dirInfo!.polylinePoints
+                .map((e) => LatLng(e.latitude, e.longitude))
+                .toList(),
+          ),
       },
       onTap: widget.currentLocationMarkerOnly ? null : _addPunchMarker,
       onMapCreated: (GoogleMapController controller) {

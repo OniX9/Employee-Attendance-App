@@ -3,6 +3,7 @@ import 'package:employee_attendance/controller/uiProviders/mark_attendance_ui.da
 import 'package:employee_attendance/widgets/clickable_text.dart';
 import 'package:employee_attendance/widgets/google_map_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../widgets/my_appbar.dart';
 
@@ -49,8 +50,8 @@ class MarkAttendanceScreen extends StatelessWidget {
               },
               child: CircleAvatar(
                 radius: fingerprintIconRadius,
-                child:
-                    Icon(Icons.fingerprint, size: 50), //TODO: ADD Proper Icon
+                child: SvgPicture.asset('assets/images/mark_attendance/finger_scan.svg',width: 50, height: 50,),
+                    // Icon(Icons.fingerprint, size: 50), //TODO: ADD Proper Icon
                 // backgroundImage: ,
               ),
             ),

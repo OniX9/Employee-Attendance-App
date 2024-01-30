@@ -44,6 +44,8 @@ dependencies:
   draggable_bottom_sheet: ^1.0.2
   calendar_view: ^1.0.4
   google_maps_flutter: ^2.5.3
+  dio: ^5.4.0
+  flutter_polyline_points: ^2.0.0
   google_maps_cluster_manager: ^3.1.0
   google_static_maps_controller: ^1.0.0
 
@@ -83,6 +85,7 @@ flutter:
     - assets/images/employee_dashboard/
     - assets/images/skype.svg
     - assets/images/admin_dashboard_only/
+    - assets/images/mark_attendance/finger_scan.svg
 
   #   - images/a_dot_ham.jpeg
 
