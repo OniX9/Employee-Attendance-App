@@ -200,14 +200,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.3.0"
-  google_maps_cluster_manager:
-    dependency: "direct main"
-    description:
-      name: google_maps_cluster_manager
-      sha256: "36e9a4b2d831c470fc85d692a6c9cec70e0f385d578b9697de5f4de347561b83"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.1.0"
   google_maps_flutter:
     dependency: "direct main"
     description:
@@ -248,14 +240,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.4+1"
-  google_static_maps_controller:
-    dependency: "direct main"
-    description:
-      name: google_static_maps_controller
-      sha256: "212f3e6d034b576491b2bf76446a48bd176dbaafe418e02ef4bdb7b278f49ef2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   graphs:
     dependency: transitive
     description:
@@ -400,6 +384,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  pinput:
+    dependency: "direct main"
+    description:
+      name: pinput
+      sha256: a92b55ecf9c25d1b9e100af45905385d5bc34fc9b6b04177a9e82cb88fe4d805
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.1"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -453,6 +445,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smart_auth:
+    dependency: transitive
+    description:
+      name: smart_auth
+      sha256: a25229b38c02f733d0a4e98d941b42bed91a976cb589e934895e60ccfa674cf6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   source_span:
     dependency: transitive
     description:
@@ -517,30 +517,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  universal_platform:
+    dependency: transitive
+    description:
+      name: universal_platform
+      sha256: d315be0f6641898b280ffa34e2ddb14f3d12b1a37882557869646e0cc363d0cc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0+1"
   vector_graphics:
     dependency: transitive
     description:
       name: vector_graphics
-      sha256: "18f6690295af52d081f6808f2f7c69f0eed6d7e23a71539d75f4aeb8f0062172"
+      sha256: ff64a3523ea7276fbd6554d7d8479423740546b599776dbd45e3475b12d76260
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.9+2"
+    version: "1.1.10"
   vector_graphics_codec:
     dependency: transitive
     description:
       name: vector_graphics_codec
-      sha256: "531d20465c10dfac7f5cd90b60bbe4dd9921f1ec4ca54c83ebb176dbacb7bb2d"
+      sha256: be0c85eef2a1db9e6a965e0778193df753ab42951808302c7ac7301969efb4a2
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.9+2"
+    version: "1.1.10"
   vector_graphics_compiler:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: "03012b0a33775c5530576b70240308080e1d5050f0faf000118c20e6463bc0ad"
+      sha256: "23c2716416871a7ac70c2860d68d98aac5f9c3b0a079add9c7324f0518999005"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.9+2"
+    version: "1.1.10"
   vector_math:
     dependency: transitive
     description:

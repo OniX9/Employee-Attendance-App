@@ -33,7 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_onboarding_slider: ^1.0.11
   rive: ^0.12.4
-  flutter_svg: ^2.0.7
+  flutter_svg: ^2.0.9
   provider: ^6.0.5
   widget_size: ^1.0.0
   animated_toggle_switch: ^0.8.0
@@ -45,9 +45,8 @@ dependencies:
   calendar_view: ^1.0.4
   google_maps_flutter: ^2.5.3
   dio: ^5.4.0
+  pinput: ^3.0.1
   flutter_polyline_points: ^2.0.0
-  google_maps_cluster_manager: ^3.1.0
-  google_static_maps_controller: ^1.0.0
 
 dev_dependencies:
   flutter_test:

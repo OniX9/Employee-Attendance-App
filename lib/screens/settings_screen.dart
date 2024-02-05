@@ -1,9 +1,11 @@
 import 'package:employee_attendance/constants.dart';
+import 'package:employee_attendance/controller/uiProviders/admin_ui.dart';
 import 'package:employee_attendance/screens/subscription_screen.dart';
 import 'package:employee_attendance/widgets/my_appbar.dart';
 import 'package:employee_attendance/widgets/page_transiton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -11,6 +13,7 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isAdmin = Provider.of<AdminUIProvider>(context).isAdmin;
     return Scaffold(
       appBar: MyAppBar(context, label: 'Settings'),
       body: SafeArea(
@@ -32,19 +35,22 @@ class SettingScreen extends StatelessWidget {
                 size: 20,
               ),
             ),
-            SettingsItem(
-              label: 'Subscription Plans',
-              trailing: Icon(
-                Icons.credit_card,
-                color: Colors.grey[900],
-                size: 22,
+            Visibility(
+              visible: isAdmin,
+              child: SettingsItem(
+                label: 'Subscription Plans',
+                trailing: Icon(
+                  Icons.credit_card,
+                  color: Colors.grey[900],
+                  size: 22,
+                ),
+                onPressed: (){
+                  Navigator.of(context).push(PageTransition(
+                    SubscriptionScreen(),
+                    direction: SlideFrom.right,
+                  ));
+                },
               ),
-              onPressed: (){
-                Navigator.of(context).push(PageTransition(
-                  SubscriptionScreen(),
-                  direction: SlideFrom.right,
-                ));
-              },
             ),
             SettingsItem(
               // TODO: Use proper Icon
